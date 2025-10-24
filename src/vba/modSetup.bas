@@ -57,9 +57,6 @@ Public Sub SetupESVWorkbook()
 
     SetupCatalogos wsC
 
-    ' Actualizar catálogo de IDs de incidentes
-    EnsureIncidentIdCatalog
-
     MsgBox "Estructura creada/actualizada.", vbInformation
 End Sub
 
@@ -146,24 +143,4 @@ Private Sub EnsureCatalog(WS As Worksheet, colLetter As String, header As String
     ' Crear/actualizar nombres en minúsculas y mayúsculas
     AddOrUpdateName header, dataRng
     AddOrUpdateName UCase(header), dataRng
-End Sub
-
-Public Sub EnsureIncidentIdCatalog()
-    Dim ws As Worksheet, lo As ListObject, col As ListColumn
-    On Error Resume Next
-    Set ws = ThisWorkbook.Worksheets("Incidentes")
-    If Not ws Is Nothing Then Set lo = ws.ListObjects("tbIncidente")
-    If Not lo Is Nothing Then Set col = lo.ListColumns("id_incidente")
-    On Error GoTo 0
-    If lo Is Nothing Or col Is Nothing Then Exit Sub
-
-    Dim rng As Range
-    If lo.ListRows.Count > 0 Then
-        Set rng = col.DataBodyRange
-    Else
-        ' Rango ficticio vacío (una celda debajo del header)
-        Set rng = col.Range.Cells(1, 1).Offset(1, 0)
-    End If
-    AddOrUpdateName "cat_id_incidente", rng
-    AddOrUpdateName "CAT_ID_INCIDENTE", rng
 End Sub

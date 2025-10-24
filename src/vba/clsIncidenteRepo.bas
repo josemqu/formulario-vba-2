@@ -20,7 +20,7 @@ Public Function SaveEntity(ByVal ent As clsIncidente) As String
     Dim id As String
     Dim d As Object: Set d = ent.ToDict
     If LenB(CStr(ent.id_incidente)) = 0 Then
-        d("id_incidente") = NewShortId()
+        d("id_incidente") = NewUUID()
         d("creado_por") = UserNameOrDefault()
         d("creado_en") = NowIso()
     Else
