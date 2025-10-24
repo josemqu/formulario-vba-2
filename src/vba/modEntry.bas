@@ -15,3 +15,7 @@ Public Sub AbrirRegistroESV()
 EH:
     MsgBox "No se pudo abrir el formulario 'frmRegistroESV'.\nAsegúrate de crearlo en el Editor de VBA.", vbExclamation
 End Sub
+
+Public Sub AbrirRegistroESVEnHoja()
+    AbrirFormularioIncidenteEnHoja
+End Sub

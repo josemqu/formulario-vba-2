@@ -62,10 +62,10 @@ Public Sub ReimportarTodoElCodigo()
         End If
     Next i
     
-    MsgBox "Reimportaci�n completada." & vbCrLf & _
-           "M�dulos y clases eliminados y reimportados desde:" & vbCrLf & _
-           "- " & modPath & vbCrLf & _
-           "- " & clsPath, vbInformation, "Reimportaci�n"
+    ' MsgBox "Reimportación completada." & vbCrLf & _
+    '        "Módulos y clases eliminados y reimportados desde:" & vbCrLf & _
+    '        "- " & modPath & vbCrLf & _
+    '        "- " & clsPath, vbInformation, "Reimportación"
 End Sub
 
 Private Sub CleanClassHeaders(cm As Object)
@@ -107,7 +107,6 @@ Public Sub EliminarModReimportarTodo()
     vbProj.VBComponents.Remove vbProj.VBComponents("modReimportarTodo")
     On Error GoTo 0
     
-    MsgBox "M�dulo modReimportarTodo eliminado.", vbInformation
+    ' MsgBox "Modulo modReimportarTodo eliminado.", vbInformation
 End Sub
-
 
