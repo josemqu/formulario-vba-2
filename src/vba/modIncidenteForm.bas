@@ -63,3 +63,42 @@ Public Function SaveIncidenteFromForm(frm As Object) As String
     SetCtrlValue frm, "lblIdIncidente", SaveIncidenteFromForm
     MsgBox "Incidente guardado: " & SaveIncidenteFromForm, vbInformation
 End Function
+
+Public Sub WriteIncidenteToForm(frm As Object, e As clsIncidente)
+    On Error Resume Next
+    SetCtrlValue frm, "lblIdIncidente", e.id_incidente
+    SetCtrlValue frm, "txtFechaHoraOcurrencia", e.fecha_hora_ocurrencia
+    SetCtrlValue frm, "cmbPais", e.pais
+    SetCtrlValue frm, "cmbProvincia", e.provincia
+    SetCtrlValue frm, "cmbLocalidad", e.localidad_zona
+    SetCtrlValue frm, "txtCoordenadas", e.coordenadas_geograficas
+    SetCtrlValue frm, "txtLugarEspecifico", e.lugar_especifico
+    SetCtrlValue frm, "cmbUOIncidente", e.uo_incidente
+    SetCtrlValue frm, "cmbUOAccidentado", e.uo_accidentado
+    SetCtrlValue frm, "txtDescripcion", e.descripcion_esv
+    SetCtrlValue frm, "cmbDenuncia", e.denuncia_policial
+    SetCtrlValue frm, "cmbAlcohol", e.examen_alcoholemia
+    SetCtrlValue frm, "cmbSustancias", e.examen_sustancias
+    SetCtrlValue frm, "cmbEntrevistas", e.entrevistas_testigos
+    SetCtrlValue frm, "txtAccionInmediata", e.accion_inmediata
+    SetCtrlValue frm, "cmbConsecuencias", e.consecuencias_seguridad
+    SetCtrlValue frm, "txtFechaHoraReporte", e.fecha_hora_reporte
+    SetCtrlValue frm, "txtCantidadPersonas", e.cantidad_personas
+    SetCtrlValue frm, "txtCantidadVehiculos", e.cantidad_vehiculos
+    SetCtrlValue frm, "cmbClaseEvento", e.clase_evento
+    SetCtrlValue frm, "cmbTipoColision", e.tipo_colision
+    SetCtrlValue frm, "cmbNivelSeveridad", e.nivel_severidad
+    SetCtrlValue frm, "cmbClasificacion", e.clasificacion_esv
+    On Error GoTo 0
+End Sub
+
+Public Sub LoadIncidenteById(frm As Object, ByVal id As String)
+    Dim e As clsIncidente
+    Set e = clsIncidenteRepo.FindById(id)
+    If e Is Nothing Then
+        MsgBox "No se encontró el incidente: " & id, vbExclamation
+        Exit Sub
+    End If
+    LoadIncidentCatalogs frm
+    WriteIncidenteToForm frm, e
+End Sub
