@@ -66,41 +66,44 @@ Private Sub ApplyValidations(WS As Worksheet)
     On Error GoTo 0
 End Sub
 
-Private Sub EnsureGuardarButton(WS As Worksheet)
+Private Sub EnsureActionButton(WS As Worksheet, ByVal btnName As String, ByVal cellAddr As String, ByVal w As Single, ByVal h As Single, ByVal caption As String, ByVal macroName As String)
     Dim shp As Shape
     On Error Resume Next
-    Set shp = WS.Shapes("btnGuardarIncidente")
+    Set shp = WS.Shapes(btnName)
     On Error GoTo 0
-    If shp Is Nothing Then
-        Set shp = WS.Shapes.AddShape(msoShapeRoundedRectangle, WS.Range("B26").Left, WS.Range("B26").Top, 160, 32)
-        shp.name = "btnGuardarIncidente"
-        shp.TextFrame.Characters.Text = "Guardar incidente"
-        shp.OnAction = "GuardarIncidenteDesdeHoja"
-    Else
-        shp.OnAction = "GuardarIncidenteDesdeHoja"
+    ' Si existe pero no es AutoShape, eliminar y recrear
+    If Not shp Is Nothing Then
+        If shp.Type <> msoAutoShape Then
+            shp.Delete
+            Set shp = Nothing
+        End If
     End If
-    On Error Resume Next
-    Set shp = WS.Shapes("btnNuevoIncidente")
-    On Error GoTo 0
     If shp Is Nothing Then
-        Set shp = WS.Shapes.AddShape(msoShapeRoundedRectangle, WS.Range("D26").Left, WS.Range("D26").Top, 120, 32)
-        shp.name = "btnNuevoIncidente"
-        shp.TextFrame.Characters.Text = "Nuevo"
-        shp.OnAction = "NuevoIncidenteEnHoja"
+        Set shp = WS.Shapes.AddShape(msoShapeRoundedRectangle, WS.Range(cellAddr).Left, WS.Range(cellAddr).Top, w, h)
+        shp.Name = btnName
     Else
-        shp.OnAction = "NuevoIncidenteEnHoja"
+        shp.Left = WS.Range(cellAddr).Left
+        shp.Top = WS.Range(cellAddr).Top
+        shp.Width = w
+        shp.Height = h
     End If
-    On Error Resume Next
-    Set shp = WS.Shapes("btnEliminarIncidente")
-    On Error GoTo 0
-    If shp Is Nothing Then
-        Set shp = WS.Shapes.AddShape(msoShapeRoundedRectangle, WS.Range("F26").Left, WS.Range("F26").Top, 120, 32)
-        shp.name = "btnEliminarIncidente"
-        shp.TextFrame.Characters.Text = "Eliminar"
-        shp.OnAction = "EliminarIncidenteDesdeHoja"
-    Else
-        shp.OnAction = "EliminarIncidenteDesdeHoja"
-    End If
+    With shp
+        .TextFrame.Characters.Text = caption
+        .OnAction = "modSheetIncidente." & macroName
+        .ZOrder msoBringToFront
+        .Placement = xlMoveAndSize
+        .LockAspectRatio = msoFalse
+        On Error Resume Next
+        .TextFrame.HorizontalAlignment = xlHAlignCenter
+        .TextFrame.VerticalAlignment = xlVAlignCenter
+        On Error GoTo 0
+    End With
+End Sub
+
+Private Sub EnsureGuardarButton(WS As Worksheet)
+    EnsureActionButton WS, "btnGuardarIncidente", "B26", 160, 32, "Guardar incidente", "GuardarIncidenteDesdeHoja"
+    EnsureActionButton WS, "btnNuevoIncidente", "D26", 120, 32, "Nuevo", "NuevoIncidenteEnHoja"
+    EnsureActionButton WS, "btnEliminarIncidente", "F26", 120, 32, "Eliminar", "EliminarIncidenteDesdeHoja"
 End Sub
 
 Public Sub AbrirFormularioIncidenteEnHoja()
