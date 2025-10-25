@@ -17,11 +17,33 @@ Private Function WS() As Worksheet
     Set WS = ThisWorkbook.Worksheets("Vehiculos")
 End Function
 
+Private Function NextVehiculoId() As String
+    Dim lo As ListObject
+    Dim maxSeq As Long: maxSeq = 0
+    On Error Resume Next
+    Set lo = WS.ListObjects("tbVehiculo")
+    On Error GoTo 0
+    If Not lo Is Nothing Then
+        Dim rw As ListRow, s As String, n As Long
+        For Each rw In lo.ListRows
+            s = CStr(rw.Range.Cells(1, 1).Value)
+            If LenB(s) > 0 Then
+                If Left$(s, 4) = "VEH-" Then
+                    n = Val(Mid$(s, 5))
+                    If n > maxSeq Then maxSeq = n
+                End If
+            End If
+        Next rw
+    End If
+    maxSeq = maxSeq + 1
+    NextVehiculoId = "VEH-" & Format$(maxSeq, "00000")
+End Function
+
 Public Function SaveEntity(ByVal ent As clsVehiculo) As String
     Dim repo As New clsRepository
     Dim d As Object: Set d = ent.ToDict
     If LenB(CStr(ent.id_vehiculo)) = 0 Then
-        d("id_vehiculo") = NewUUID()
+        d("id_vehiculo") = NextVehiculoId()
         d("creado_por") = UserNameOrDefault()
         d("creado_en") = NowIso()
     Else
