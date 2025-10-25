@@ -101,9 +101,9 @@ Private Sub EnsureActionButton(WS As Worksheet, ByVal btnName As String, ByVal c
 End Sub
 
 Private Sub EnsureGuardarButton(WS As Worksheet)
-    EnsureActionButton WS, "btnGuardarIncidente", "B26", 160, 32, "Guardar incidente", "GuardarIncidenteDesdeHoja"
-    EnsureActionButton WS, "btnNuevoIncidente", "D26", 120, 32, "Nuevo", "NuevoIncidenteEnHoja"
-    EnsureActionButton WS, "btnEliminarIncidente", "F26", 120, 32, "Eliminar", "EliminarIncidenteDesdeHoja"
+    EnsureActionButton WS, "btnGuardarIncidente", "E2", 120, 32, "Guardar incidente", "GuardarIncidenteDesdeHoja"
+    EnsureActionButton WS, "btnNuevoIncidente", "E4", 120, 32, "Nuevo", "NuevoIncidenteEnHoja"
+    EnsureActionButton WS, "btnEliminarIncidente", "E6", 120, 32, "Eliminar", "EliminarIncidenteDesdeHoja"
 End Sub
 
 Public Sub AbrirFormularioIncidenteEnHoja()

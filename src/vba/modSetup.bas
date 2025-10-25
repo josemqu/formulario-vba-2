@@ -57,7 +57,7 @@ Public Sub SetupESVWorkbook()
 
     SetupCatalogos wsC
 
-    MsgBox "Estructura creada/actualizada.", vbInformation
+    ' MsgBox "Estructura creada/actualizada.", vbInformation
 End Sub
 
 Private Sub SetupCatalogos(WS As Worksheet)
