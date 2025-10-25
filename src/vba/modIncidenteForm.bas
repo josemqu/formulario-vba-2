@@ -3,19 +3,19 @@ Option Explicit
 
 Private Function CtrlText(frm As Object, ctrlName As String) As String
     On Error Resume Next
-    CtrlText = CStr(frm.Controls(ctrlName).Value)
+    CtrlText = CStr(frm.Controls(ctrlName).value)
     On Error GoTo 0
 End Function
 
 Private Function CtrlValue(frm As Object, ctrlName As String) As Variant
     On Error Resume Next
-    CtrlValue = frm.Controls(ctrlName).Value
+    CtrlValue = frm.Controls(ctrlName).value
     On Error GoTo 0
 End Function
 
 Private Sub SetCtrlValue(frm As Object, ctrlName As String, ByVal v As Variant)
     On Error Resume Next
-    frm.Controls(ctrlName).Value = v
+    frm.Controls(ctrlName).value = v
     On Error GoTo 0
 End Sub
 

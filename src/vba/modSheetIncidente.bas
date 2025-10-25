@@ -2,164 +2,169 @@ Attribute VB_Name = "modSheetIncidente"
 Option Explicit
 
 Private Function EnsureFormSheet() As Worksheet
-    Dim ws As Worksheet
+    Dim WS As Worksheet
     On Error Resume Next
-    Set ws = ThisWorkbook.Worksheets("Formulario")
+    Set WS = ThisWorkbook.Worksheets("Formulario")
     On Error GoTo 0
-    If ws Is Nothing Then
-        Set ws = ThisWorkbook.Worksheets.Add(After:=ThisWorkbook.Worksheets(ThisWorkbook.Worksheets.Count))
-        ws.Name = "Formulario"
+    If WS Is Nothing Then
+        Set WS = ThisWorkbook.Worksheets.Add(After:=ThisWorkbook.Worksheets(ThisWorkbook.Worksheets.Count))
+        WS.name = "Formulario"
     End If
-    Set EnsureFormSheet = ws
+    Set EnsureFormSheet = WS
 End Function
 
-Private gAppEv As clsAppEvents
-
-Private Sub LayoutForm(ws As Worksheet)
-    ws.Range("B2").Value = "ID incidente"
-    ws.Range("B3").Value = "Fecha/hora ocurrencia"
-    ws.Range("B4").Value = "País"
-    ws.Range("B5").Value = "Provincia"
-    ws.Range("B6").Value = "Localidad/Zona"
-    ws.Range("B7").Value = "Coordenadas"
-    ws.Range("B8").Value = "Lugar específico"
-    ws.Range("B9").Value = "UO incidente"
-    ws.Range("B10").Value = "UO accidentado"
-    ws.Range("B11").Value = "Descripción"
-    ws.Range("B12").Value = "Denuncia policial"
-    ws.Range("B13").Value = "Examen alcoholemia"
-    ws.Range("B14").Value = "Examen sustancias"
-    ws.Range("B15").Value = "Entrevistas testigos"
-    ws.Range("B16").Value = "Acción inmediata"
-    ws.Range("B17").Value = "Consecuencias seguridad"
-    ws.Range("B18").Value = "Fecha/hora reporte"
-    ws.Range("B19").Value = "Cantidad personas"
-    ws.Range("B20").Value = "Cantidad vehículos"
-    ws.Range("B21").Value = "Clase evento"
-    ws.Range("B22").Value = "Tipo colisión"
-    ws.Range("B23").Value = "Nivel severidad"
-    ws.Range("B24").Value = "Clasificación ESV"
-    If LenB(CStr(ws.Range("C3").Value)) = 0 Then ws.Range("C3").Value = Now
-    If LenB(CStr(ws.Range("C18").Value)) = 0 Then ws.Range("C18").Value = Now
-    ws.Columns("B:B").ColumnWidth = 26
-    ws.Columns("C:C").ColumnWidth = 50
-    ws.Range("B2:B24").WrapText = True
-    ws.Range("C3,C18").NumberFormat = "dd/mm/yyyy hh:mm"
-    ws.Range("C19:C20").NumberFormat = "0"
+Private Sub LayoutForm(WS As Worksheet)
+    WS.Range("B2").value = "ID incidente"
+    WS.Range("B3").value = "Fecha/hora ocurrencia"
+    WS.Range("B4").value = "País"
+    WS.Range("B5").value = "Provincia"
+    WS.Range("B6").value = "Localidad/Zona"
+    WS.Range("B7").value = "Coordenadas"
+    WS.Range("B8").value = "Lugar específico"
+    WS.Range("B9").value = "UO incidente"
+    WS.Range("B10").value = "UO accidentado"
+    WS.Range("B11").value = "Descripción"
+    WS.Range("B12").value = "Denuncia policial"
+    WS.Range("B13").value = "Examen alcoholemia"
+    WS.Range("B14").value = "Examen sustancias"
+    WS.Range("B15").value = "Entrevistas testigos"
+    WS.Range("B16").value = "Acción inmediata"
+    WS.Range("B17").value = "Consecuencias seguridad"
+    WS.Range("B18").value = "Fecha/hora reporte"
+    WS.Range("B19").value = "Cantidad personas"
+    WS.Range("B20").value = "Cantidad vehículos"
+    WS.Range("B21").value = "Clase evento"
+    WS.Range("B22").value = "Tipo colisión"
+    WS.Range("B23").value = "Nivel severidad"
+    WS.Range("B24").value = "Clasificación ESV"
+    If LenB(CStr(WS.Range("C3").value)) = 0 Then WS.Range("C3").value = Now
+    If LenB(CStr(WS.Range("C18").value)) = 0 Then WS.Range("C18").value = Now
+    WS.Columns("B:B").ColumnWidth = 26
+    WS.Columns("C:C").ColumnWidth = 50
+    WS.Range("B2:B24").WrapText = True
+    WS.Range("C3,C18").NumberFormat = "dd/mm/yyyy hh:mm"
+    WS.Range("C19:C20").NumberFormat = "0"
 End Sub
 
-Private Sub ApplyValidations(ws As Worksheet)
+Private Sub ApplyValidations(WS As Worksheet)
     Dim r As Range
     On Error Resume Next
-    Set r = ws.Range("C4"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_PAIS"
-    Set r = ws.Range("C5"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_PROVINCIA"
-    Set r = ws.Range("C6"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_LOCALIDAD_ZONA"
-    Set r = ws.Range("C9"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_UO_INCIDENTE"
-    Set r = ws.Range("C10"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_UO_ACCIDENTADO"
-    Set r = ws.Range("C12"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_SI_NO_NA"
-    Set r = ws.Range("C13"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_SI_NO_NA"
-    Set r = ws.Range("C14"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_SI_NO_NA"
-    Set r = ws.Range("C15"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_SI_NO_NA"
-    Set r = ws.Range("C17"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_SI_NO_NA"
-    Set r = ws.Range("C21"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_CLASE_EVENTO"
-    Set r = ws.Range("C22"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_TIPO_COLISION"
-    Set r = ws.Range("C23"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_NIVEL_SEVERIDAD"
-    Set r = ws.Range("C24"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_CLASIFICACION_ESV"
+    Set r = WS.Range("C4"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_PAIS"
+    Set r = WS.Range("C5"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_PROVINCIA"
+    Set r = WS.Range("C6"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_LOCALIDAD_ZONA"
+    Set r = WS.Range("C9"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_UO_INCIDENTE"
+    Set r = WS.Range("C10"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_UO_ACCIDENTADO"
+    Set r = WS.Range("C12"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_SI_NO_NA"
+    Set r = WS.Range("C13"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_SI_NO_NA"
+    Set r = WS.Range("C14"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_SI_NO_NA"
+    Set r = WS.Range("C15"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_SI_NO_NA"
+    Set r = WS.Range("C17"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_SI_NO_NA"
+    Set r = WS.Range("C21"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_CLASE_EVENTO"
+    Set r = WS.Range("C22"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_TIPO_COLISION"
+    Set r = WS.Range("C23"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_NIVEL_SEVERIDAD"
+    Set r = WS.Range("C24"): r.Validation.Delete: r.Validation.Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:=xlBetween, Formula1:="=CAT_CLASIFICACION_ESV"
     On Error GoTo 0
 End Sub
 
-Private Sub EnsureGuardarButton(ws As Worksheet)
+Private Sub EnsureGuardarButton(WS As Worksheet)
     Dim shp As Shape
     On Error Resume Next
-    Set shp = ws.Shapes("btnGuardarIncidente")
+    Set shp = WS.Shapes("btnGuardarIncidente")
     On Error GoTo 0
     If shp Is Nothing Then
-        Set shp = ws.Shapes.AddShape(msoShapeRoundedRectangle, ws.Range("B26").Left, ws.Range("B26").Top, 160, 32)
-        shp.Name = "btnGuardarIncidente"
+        Set shp = WS.Shapes.AddShape(msoShapeRoundedRectangle, WS.Range("B26").Left, WS.Range("B26").Top, 160, 32)
+        shp.name = "btnGuardarIncidente"
         shp.TextFrame.Characters.Text = "Guardar incidente"
         shp.OnAction = "GuardarIncidenteDesdeHoja"
     Else
         shp.OnAction = "GuardarIncidenteDesdeHoja"
     End If
     On Error Resume Next
-    Set shp = ws.Shapes("btnNuevoIncidente")
+    Set shp = WS.Shapes("btnNuevoIncidente")
     On Error GoTo 0
     If shp Is Nothing Then
-        Set shp = ws.Shapes.AddShape(msoShapeRoundedRectangle, ws.Range("D26").Left, ws.Range("D26").Top, 120, 32)
-        shp.Name = "btnNuevoIncidente"
+        Set shp = WS.Shapes.AddShape(msoShapeRoundedRectangle, WS.Range("D26").Left, WS.Range("D26").Top, 120, 32)
+        shp.name = "btnNuevoIncidente"
         shp.TextFrame.Characters.Text = "Nuevo"
         shp.OnAction = "NuevoIncidenteEnHoja"
     Else
         shp.OnAction = "NuevoIncidenteEnHoja"
     End If
+    On Error Resume Next
+    Set shp = WS.Shapes("btnEliminarIncidente")
+    On Error GoTo 0
+    If shp Is Nothing Then
+        Set shp = WS.Shapes.AddShape(msoShapeRoundedRectangle, WS.Range("F26").Left, WS.Range("F26").Top, 120, 32)
+        shp.name = "btnEliminarIncidente"
+        shp.TextFrame.Characters.Text = "Eliminar"
+        shp.OnAction = "EliminarIncidenteDesdeHoja"
+    Else
+        shp.OnAction = "EliminarIncidenteDesdeHoja"
+    End If
 End Sub
 
 Public Sub AbrirFormularioIncidenteEnHoja()
     SetupESVWorkbook
-    Dim ws As Worksheet
-    Set ws = EnsureFormSheet()
-    LayoutForm ws
-    ApplyValidations ws
-    EnsureGuardarButton ws
-    If gAppEv Is Nothing Then
-        Set gAppEv = New clsAppEvents
-        Set gAppEv.App = Application
-    End If
+    Dim WS As Worksheet
+    Set WS = EnsureFormSheet()
+    LayoutForm WS
+    ApplyValidations WS
+    EnsureGuardarButton WS
     EstilizarFormularioIncidente
-    ws.Activate
+    WS.Activate
 End Sub
 
-Private Function ReadIncidenteFromSheet(ws As Worksheet) As clsIncidente
+Private Function ReadIncidenteFromSheet(WS As Worksheet) As clsIncidente
     Dim e As New clsIncidente
-    e.id_incidente = CStr(ws.Range("C2").Value)
-    e.fecha_hora_ocurrencia = ws.Range("C3").Value
-    e.pais = CStr(ws.Range("C4").Value)
-    e.provincia = CStr(ws.Range("C5").Value)
-    e.localidad_zona = CStr(ws.Range("C6").Value)
-    e.coordenadas_geograficas = CStr(ws.Range("C7").Value)
-    e.lugar_especifico = CStr(ws.Range("C8").Value)
-    e.uo_incidente = CStr(ws.Range("C9").Value)
-    e.uo_accidentado = CStr(ws.Range("C10").Value)
-    e.descripcion_esv = CStr(ws.Range("C11").Value)
-    e.denuncia_policial = CStr(ws.Range("C12").Value)
-    e.examen_alcoholemia = CStr(ws.Range("C13").Value)
-    e.examen_sustancias = CStr(ws.Range("C14").Value)
-    e.entrevistas_testigos = CStr(ws.Range("C15").Value)
-    e.accion_inmediata = CStr(ws.Range("C16").Value)
-    e.consecuencias_seguridad = CStr(ws.Range("C17").Value)
-    e.fecha_hora_reporte = ws.Range("C18").Value
-    e.cantidad_personas = ws.Range("C19").Value
-    e.cantidad_vehiculos = ws.Range("C20").Value
-    e.clase_evento = CStr(ws.Range("C21").Value)
-    e.tipo_colision = CStr(ws.Range("C22").Value)
-    e.nivel_severidad = CStr(ws.Range("C23").Value)
-    e.clasificacion_esv = CStr(ws.Range("C24").Value)
+    e.id_incidente = CStr(WS.Range("C2").value)
+    e.fecha_hora_ocurrencia = WS.Range("C3").value
+    e.pais = CStr(WS.Range("C4").value)
+    e.provincia = CStr(WS.Range("C5").value)
+    e.localidad_zona = CStr(WS.Range("C6").value)
+    e.coordenadas_geograficas = CStr(WS.Range("C7").value)
+    e.lugar_especifico = CStr(WS.Range("C8").value)
+    e.uo_incidente = CStr(WS.Range("C9").value)
+    e.uo_accidentado = CStr(WS.Range("C10").value)
+    e.descripcion_esv = CStr(WS.Range("C11").value)
+    e.denuncia_policial = CStr(WS.Range("C12").value)
+    e.examen_alcoholemia = CStr(WS.Range("C13").value)
+    e.examen_sustancias = CStr(WS.Range("C14").value)
+    e.entrevistas_testigos = CStr(WS.Range("C15").value)
+    e.accion_inmediata = CStr(WS.Range("C16").value)
+    e.consecuencias_seguridad = CStr(WS.Range("C17").value)
+    e.fecha_hora_reporte = WS.Range("C18").value
+    e.cantidad_personas = WS.Range("C19").value
+    e.cantidad_vehiculos = WS.Range("C20").value
+    e.clase_evento = CStr(WS.Range("C21").value)
+    e.tipo_colision = CStr(WS.Range("C22").value)
+    e.nivel_severidad = CStr(WS.Range("C23").value)
+    e.clasificacion_esv = CStr(WS.Range("C24").value)
     Set ReadIncidenteFromSheet = e
 End Function
 
-Private Sub ClearForm(ws As Worksheet)
-    ws.Range("C2:C24").ClearContents
-    ws.Range("C3").Value = Now
-    ws.Range("C18").Value = Now
+Private Sub ClearForm(WS As Worksheet)
+    WS.Range("C2:C24").ClearContents
+    WS.Range("C3").value = Now
+    WS.Range("C18").value = Now
 End Sub
 
-Private Function ValidateForm(ws As Worksheet, ByRef messages As Collection) As Boolean
+Private Function ValidateForm(WS As Worksheet, ByRef messages As Collection) As Boolean
     Dim ok As Boolean: ok = True
     Set messages = New Collection
-    If LenB(CStr(ws.Range("C3").Value)) = 0 Then ok = False: messages.Add("Fecha/hora ocurrencia es requerida.")
-    If LenB(CStr(ws.Range("C4").Value)) = 0 Then ok = False: messages.Add("País es requerido.")
-    If LenB(CStr(ws.Range("C21").Value)) = 0 Then ok = False: messages.Add("Clase de evento es requerida.")
-    If LenB(CStr(ws.Range("C19").Value)) > 0 Then If Not IsNumeric(ws.Range("C19").Value) Then ok = False: messages.Add("Cantidad personas debe ser numérico.")
-    If LenB(CStr(ws.Range("C20").Value)) > 0 Then If Not IsNumeric(ws.Range("C20").Value) Then ok = False: messages.Add("Cantidad vehículos debe ser numérico.")
+    If LenB(CStr(WS.Range("C3").value)) = 0 Then ok = False: messages.Add ("Fecha/hora ocurrencia es requerida.")
+    If LenB(CStr(WS.Range("C4").value)) = 0 Then ok = False: messages.Add ("País es requerido.")
+    If LenB(CStr(WS.Range("C21").value)) = 0 Then ok = False: messages.Add ("Clase de evento es requerida.")
+    If LenB(CStr(WS.Range("C19").value)) > 0 Then If Not IsNumeric(WS.Range("C19").value) Then ok = False: messages.Add ("Cantidad personas debe ser numérico.")
+    If LenB(CStr(WS.Range("C20").value)) > 0 Then If Not IsNumeric(WS.Range("C20").value) Then ok = False: messages.Add ("Cantidad vehículos debe ser numérico.")
     ValidateForm = ok
 End Function
 
 Public Sub GuardarIncidenteDesdeHoja()
     SetupESVWorkbook
-    Dim ws As Worksheet
-    Set ws = EnsureFormSheet()
+    Dim WS As Worksheet
+    Set WS = EnsureFormSheet()
     Dim msgs As Collection
-    If Not ValidateForm(ws, msgs) Then
+    If Not ValidateForm(WS, msgs) Then
         Dim t As String: t = "No se puede guardar. Corrige los siguientes puntos:" & vbCrLf
         Dim it As Variant
         For Each it In msgs
@@ -169,96 +174,120 @@ Public Sub GuardarIncidenteDesdeHoja()
         Exit Sub
     End If
     Dim e As clsIncidente
-    Set e = ReadIncidenteFromSheet(ws)
+    Set e = ReadIncidenteFromSheet(WS)
     Dim id As String
     id = clsIncidenteRepo.SaveEntity(e)
-    ws.Range("C2").Value = id
+    WS.Range("C2").value = id
     MsgBox "Incidente guardado: " & id, vbInformation
 End Sub
 
 Public Sub NuevoIncidenteEnHoja()
-    Dim ws As Worksheet
-    Set ws = EnsureFormSheet()
-    ClearForm ws
+    Dim WS As Worksheet
+    Set WS = EnsureFormSheet()
+    ClearForm WS
+End Sub
+
+Public Sub EliminarIncidenteDesdeHoja()
+    SetupESVWorkbook
+    Dim WS As Worksheet
+    Set WS = EnsureFormSheet()
+    Dim id As String: id = CStr(WS.Range("C2").value)
+    If LenB(id) = 0 Then
+        MsgBox "No hay ID en C2 para eliminar.", vbExclamation
+        Exit Sub
+    End If
+    Dim resp As VbMsgBoxResult
+    resp = MsgBox("¿Eliminar el incidente " & id & " de forma permanente?", vbQuestion + vbYesNo + vbDefaultButton2, "Confirmar eliminación")
+    If resp <> vbYes Then Exit Sub
+    clsIncidenteRepo.DeleteById id
+    ClearForm WS
+    MsgBox "Incidente eliminado.", vbInformation
 End Sub
 
 Public Sub LoadIncidenteEnHojaDesdeIdActual()
     SetupESVWorkbook
-    Dim ws As Worksheet
-    Set ws = EnsureFormSheet()
-    Dim id As String: id = CStr(ws.Range("C2").Value)
+    Dim WS As Worksheet
+    Set WS = EnsureFormSheet()
+    Dim id As String: id = CStr(WS.Range("C2").value)
     If LenB(id) = 0 Then Exit Sub
     Dim e As clsIncidente
     Set e = clsIncidenteRepo.FindById(id)
     If e Is Nothing Then Exit Sub
-    ws.Range("C3").Value = e.fecha_hora_ocurrencia
-    ws.Range("C4").Value = e.pais
-    ws.Range("C5").Value = e.provincia
-    ws.Range("C6").Value = e.localidad_zona
-    ws.Range("C7").Value = e.coordenadas_geograficas
-    ws.Range("C8").Value = e.lugar_especifico
-    ws.Range("C9").Value = e.uo_incidente
-    ws.Range("C10").Value = e.uo_accidentado
-    ws.Range("C11").Value = e.descripcion_esv
-    ws.Range("C12").Value = e.denuncia_policial
-    ws.Range("C13").Value = e.examen_alcoholemia
-    ws.Range("C14").Value = e.examen_sustancias
-    ws.Range("C15").Value = e.entrevistas_testigos
-    ws.Range("C16").Value = e.accion_inmediata
-    ws.Range("C17").Value = e.consecuencias_seguridad
-    ws.Range("C18").Value = e.fecha_hora_reporte
-    ws.Range("C19").Value = e.cantidad_personas
-    ws.Range("C20").Value = e.cantidad_vehiculos
-    ws.Range("C21").Value = e.clase_evento
-    ws.Range("C22").Value = e.tipo_colision
-    ws.Range("C23").Value = e.nivel_severidad
-    ws.Range("C24").Value = e.clasificacion_esv
+    WS.Range("C3").value = e.fecha_hora_ocurrencia
+    WS.Range("C4").value = e.pais
+    WS.Range("C5").value = e.provincia
+    WS.Range("C6").value = e.localidad_zona
+    WS.Range("C7").value = e.coordenadas_geograficas
+    WS.Range("C8").value = e.lugar_especifico
+    WS.Range("C9").value = e.uo_incidente
+    WS.Range("C10").value = e.uo_accidentado
+    WS.Range("C11").value = e.descripcion_esv
+    WS.Range("C12").value = e.denuncia_policial
+    WS.Range("C13").value = e.examen_alcoholemia
+    WS.Range("C14").value = e.examen_sustancias
+    WS.Range("C15").value = e.entrevistas_testigos
+    WS.Range("C16").value = e.accion_inmediata
+    WS.Range("C17").value = e.consecuencias_seguridad
+    WS.Range("C18").value = e.fecha_hora_reporte
+    WS.Range("C19").value = e.cantidad_personas
+    WS.Range("C20").value = e.cantidad_vehiculos
+    WS.Range("C21").value = e.clase_evento
+    WS.Range("C22").value = e.tipo_colision
+    WS.Range("C23").value = e.nivel_severidad
+    WS.Range("C24").value = e.clasificacion_esv
 End Sub
 
 Public Sub EstilizarFormularioIncidente()
-    Dim ws As Worksheet
-    Set ws = EnsureFormSheet()
-    ws.Cells.Font.Name = "Calibri"
-    ws.Cells.Font.Size = 11
-    ws.Range("B2:B24").Font.Bold = True
-    ws.Range("B2:B24").Interior.Color = RGB(245, 245, 245)
-    ws.Range("C2:C24").Interior.Color = RGB(255, 255, 255)
-    With ws.Range("B2:C24").Borders
+    Dim WS As Worksheet
+    Set WS = EnsureFormSheet()
+    WS.Cells.Font.name = "Calibri"
+    WS.Cells.Font.Size = 11
+    WS.Range("B2:B24").Font.Bold = True
+    WS.Range("B2:B24").Interior.Color = RGB(245, 245, 245)
+    WS.Range("C2:C24").Interior.Color = RGB(255, 255, 255)
+    With WS.Range("B2:C24").Borders
         .LineStyle = xlContinuous
         .Color = RGB(220, 220, 220)
         .Weight = xlThin
     End With
-    ws.Range("B2:C24").Borders(xlInsideHorizontal).Color = RGB(235, 235, 235)
-    ws.Range("B2:C24").Borders(xlInsideVertical).Color = RGB(235, 235, 235)
-    ws.Rows("2:24").RowHeight = 20
-    ws.Columns("B:C").HorizontalAlignment = xlLeft
-    ws.Columns("C:C").HorizontalAlignment = xlLeft
-    ws.Columns("C:C").VerticalAlignment = xlCenter
-    ws.Range("B1:C1").Merge
-    ws.Range("B1").Value = "Registro de Incidente"
-    ws.Range("B1").Font.Size = 16
-    ws.Range("B1").Font.Bold = True
-    ws.Range("B1").Font.Color = RGB(32, 32, 32)
-    ws.Range("B1").Interior.Color = RGB(255, 255, 255)
-    ws.Range("B1").EntireRow.RowHeight = 28
+    WS.Range("B2:C24").Borders(xlInsideHorizontal).Color = RGB(235, 235, 235)
+    WS.Range("B2:C24").Borders(xlInsideVertical).Color = RGB(235, 235, 235)
+    WS.Rows("2:24").RowHeight = 20
+    WS.Columns("B:C").HorizontalAlignment = xlLeft
+    WS.Columns("C:C").HorizontalAlignment = xlLeft
+    WS.Columns("C:C").VerticalAlignment = xlCenter
+    WS.Range("B1:C1").Merge
+    WS.Range("B1").value = "Registro de Incidente"
+    WS.Range("B1").Font.Size = 16
+    WS.Range("B1").Font.Bold = True
+    WS.Range("B1").Font.Color = RGB(32, 32, 32)
+    WS.Range("B1").Interior.Color = RGB(255, 255, 255)
+    WS.Range("B1").EntireRow.RowHeight = 28
     On Error Resume Next
     Dim shp As Shape
-    Set shp = ws.Shapes("btnGuardarIncidente")
+    Set shp = WS.Shapes("btnGuardarIncidente")
     If Not shp Is Nothing Then
         shp.Fill.ForeColor.RGB = RGB(0, 120, 215)
         shp.Line.ForeColor.RGB = RGB(0, 84, 153)
         shp.TextFrame.Characters.Font.Color = RGB(255, 255, 255)
         shp.TextFrame.Characters.Font.Bold = True
     End If
-    Set shp = ws.Shapes("btnNuevoIncidente")
+    Set shp = WS.Shapes("btnNuevoIncidente")
     If Not shp Is Nothing Then
         shp.Fill.ForeColor.RGB = RGB(0, 153, 51)
         shp.Line.ForeColor.RGB = RGB(0, 102, 34)
         shp.TextFrame.Characters.Font.Color = RGB(255, 255, 255)
         shp.TextFrame.Characters.Font.Bold = True
     End If
+    Set shp = WS.Shapes("btnEliminarIncidente")
+    If Not shp Is Nothing Then
+        shp.Fill.ForeColor.RGB = RGB(220, 53, 69)
+        shp.Line.ForeColor.RGB = RGB(176, 42, 55)
+        shp.TextFrame.Characters.Font.Color = RGB(255, 255, 255)
+        shp.TextFrame.Characters.Font.Bold = True
+    End If
     Set shp = Nothing
-    ws.Activate
+    WS.Activate
     ActiveWindow.DisplayGridlines = False
 End Sub
 

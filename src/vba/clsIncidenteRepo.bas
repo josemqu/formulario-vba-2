@@ -24,7 +24,7 @@ Private Function NextESVId() As String
     If Not lo Is Nothing Then
         Dim rw As ListRow, s As String, n As Long
         For Each rw In lo.ListRows
-            s = CStr(rw.Range.Cells(1, 1).Value)
+            s = CStr(rw.Range.Cells(1, 1).value)
             If LenB(s) > 0 Then
                 If Left$(s, 4) = "ESV-" Then
                     n = Val(Mid$(s, 5))
@@ -52,6 +52,12 @@ Public Function SaveEntity(ByVal ent As clsIncidente) As String
     id = repo.Save(WS, "tbIncidente", "id_incidente", Headers, d)
     SaveEntity = id
 End Function
+
+Public Sub DeleteById(id As String)
+    If LenB(id) = 0 Then Exit Sub
+    Dim repo As New clsRepository
+    repo.Delete WS, "tbIncidente", "id_incidente", id
+End Sub
 
 Public Function FindById(id As String) As clsIncidente
     Dim repo As New clsRepository

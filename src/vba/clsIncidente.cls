@@ -8,7 +8,6 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-
 ' Campos de Incidente (alineados a tbIncidente)
 Public id_incidente As String
 Public fecha_hora_ocurrencia As Variant

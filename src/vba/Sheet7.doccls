@@ -1,0 +1,55 @@
+Option Explicit
+
+Private Sub Worksheet_Activate()
+    On Error Resume Next
+    AbrirFormularioIncidenteEnHoja
+    On Error GoTo 0
+End Sub
+
+Private Sub Worksheet_Change(ByVal target As Range)
+    On Error GoTo ExitHandler
+    ' Detecta cambio en C2 (ID)
+    If Intersect(target, Me.Range("C2")) Is Nothing Then Exit Sub
+    Application.EnableEvents = False
+
+    Dim id As String
+    id = CStr(Me.Range("C2").value)
+    If LenB(id) = 0 Then Exit Sub
+
+    CargarIncidentePorID id
+ExitHandler:
+    Application.EnableEvents = True
+End Sub
+
+Private Sub CargarIncidentePorID(ByVal id As String)
+    Dim e As clsIncidente
+    Set e = clsIncidenteRepo.FindById(id)
+    If e Is Nothing Then
+        MsgBox "ID no encontrado: " & id, vbExclamation
+        Exit Sub
+    End If
+
+    ' Escribe los campos en las celdas del formulario
+    Me.Range("C3").value = e.fecha_hora_ocurrencia
+    Me.Range("C4").value = e.pais
+    Me.Range("C5").value = e.provincia
+    Me.Range("C6").value = e.localidad_zona
+    Me.Range("C7").value = e.coordenadas_geograficas
+    Me.Range("C8").value = e.lugar_especifico
+    Me.Range("C9").value = e.uo_incidente
+    Me.Range("C10").value = e.uo_accidentado
+    Me.Range("C11").value = e.descripcion_esv
+    Me.Range("C12").value = e.denuncia_policial
+    Me.Range("C13").value = e.examen_alcoholemia
+    Me.Range("C14").value = e.examen_sustancias
+    Me.Range("C15").value = e.entrevistas_testigos
+    Me.Range("C16").value = e.accion_inmediata
+    Me.Range("C17").value = e.consecuencias_seguridad
+    Me.Range("C18").value = e.fecha_hora_reporte
+    Me.Range("C19").value = e.cantidad_personas
+    Me.Range("C20").value = e.cantidad_vehiculos
+    Me.Range("C21").value = e.clase_evento
+    Me.Range("C22").value = e.tipo_colision
+    Me.Range("C23").value = e.nivel_severidad
+    Me.Range("C24").value = e.clasificacion_esv
+End Sub

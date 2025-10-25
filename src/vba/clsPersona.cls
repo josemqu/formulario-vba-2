@@ -8,7 +8,6 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-
 Public id_persona As String
 Public id_incidente As String
 Public nombre_persona As String

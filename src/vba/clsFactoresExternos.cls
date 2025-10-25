@@ -8,7 +8,6 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-
 Public id_factor As String
 Public id_incidente As String
 Public tipo_superficie As String
