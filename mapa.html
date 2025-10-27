@@ -59,6 +59,25 @@
       }
     }
 
+    // Inicializar marcador automáticamente si hay coordenadas en la URL
+    // Soporta: ?coords=lat,lng  o  #coords:lat,lng
+    (function tryInitFromUrl() {
+      try {
+        var s = "";
+        if (location.search) {
+          var m = /[?&]coords=([^&]+)/i.exec(location.search);
+          if (m && m[1]) s = decodeURIComponent(m[1]);
+        }
+        if (!s && location.hash) {
+          var h = location.hash.substring(1);
+          if (h.toLowerCase().indexOf('coords:') === 0) s = h.substring(7);
+        }
+        if (s) setMarkerFromHostText(s);
+      } catch (e) {
+        // silencio
+      }
+    })();
+
   </script>
 </body>
 </html>
