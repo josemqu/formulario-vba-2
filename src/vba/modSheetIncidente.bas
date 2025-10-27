@@ -106,6 +106,186 @@ Private Sub EnsureGuardarButton(WS As Worksheet)
     EnsureActionButton WS, "btnEliminarIncidente", "E6", 120, 32, "Eliminar", "EliminarIncidenteDesdeHoja"
 End Sub
 
+' ==== Sección Personas ====
+Private Function PersonasStartRow() As Long
+    PersonasStartRow = 26
+End Function
+
+Private Sub LayoutPersonasSection(WS As Worksheet)
+    Dim r0 As Long: r0 = PersonasStartRow()
+    WS.Range("B" & r0 - 1).Value = "Personas"
+    Dim labels As Variant
+    labels = Array( _
+        "id_persona", "id_incidente", "nombre_persona", "apellido_persona", "edad_persona", _
+        "tipo_persona", "rol_persona", "antiguedad_persona", "tarea_operativa", "turno_operativo", _
+        "tipo_danio_persona", "dias_perdidos", "atencion_medica", "in_itinere", _
+        "tipo_afectacion", "parte_afectada")
+    Dim i As Long
+    For i = 0 To UBound(labels)
+        WS.Range("B" & (r0 + i)).Value = labels(i)
+    Next i
+    ' Ajustes visuales básicos
+    WS.Range("B" & (r0 - 1) & ":B" & (r0 + UBound(labels))).Font.Bold = True
+    WS.Range("B" & r0 & ":B" & (r0 + UBound(labels))).Interior.Color = RGB(245, 245, 245)
+End Sub
+
+Private Sub EnsureAddPersonaButton(WS As Worksheet)
+    EnsureActionButton WS, "btnAddPersona", "E" & (PersonasStartRow() - 1), 140, 26, "Agregar Persona", "AgregarColumnaPersona"
+End Sub
+
+Public Sub AgregarColumnaPersona()
+    Dim WS As Worksheet: Set WS = EnsureFormSheet()
+    Dim r0 As Long: r0 = PersonasStartRow()
+    Dim col As Long: col = NextEntityColumn(WS, r0)
+    WS.Cells(r0 - 1, col).Value = "Persona " & (col - 2) ' C=3 -> 1
+    ' Número para edad y días
+    WS.Cells(r0 + 4, col).NumberFormat = "0"
+    WS.Cells(r0 + 11, col).NumberFormat = "0"
+End Sub
+
+Private Function NextEntityColumn(WS As Worksheet, headerRow As Long) As Long
+    ' Empieza en columna C (3) y avanza hasta la primera vacía en la fila de encabezado
+    Dim c As Long: c = 3
+    Do While LenB(CStr(WS.Cells(headerRow - 1, c).Value)) > 0 Or LenB(CStr(WS.Cells(headerRow, c).Value)) > 0
+        c = c + 1
+    Loop
+    NextEntityColumn = c
+End Function
+
+Private Function ReadAndSavePersonas(WS As Worksheet, ByVal idInc As String) As Long
+    On Error GoTo fin
+    Dim r0 As Long: r0 = PersonasStartRow()
+    Dim col As Long: col = 3 ' C
+    Dim countSaved As Long: countSaved = 0
+    Do While LenB(CStr(WS.Cells(r0 - 1, col).Value)) > 0 Or LenB(CStr(WS.Cells(r0 + 2, col).Value)) > 0
+        Dim anyValue As Boolean: anyValue = False
+        Dim e As New clsPersona
+        e.id_persona = CStr(WS.Cells(r0 + 0, col).Value)
+        e.id_incidente = idInc
+        e.nombre_persona = CStr(WS.Cells(r0 + 2, col).Value): If LenB(e.nombre_persona) > 0 Then anyValue = True
+        e.apellido_persona = CStr(WS.Cells(r0 + 3, col).Value)
+        e.edad_persona = WS.Cells(r0 + 4, col).Value
+        e.tipo_persona = CStr(WS.Cells(r0 + 5, col).Value)
+        e.rol_persona = CStr(WS.Cells(r0 + 6, col).Value)
+        e.antiguedad_persona = CStr(WS.Cells(r0 + 7, col).Value)
+        e.tarea_operativa = CStr(WS.Cells(r0 + 8, col).Value)
+        e.turno_operativo = CStr(WS.Cells(r0 + 9, col).Value)
+        e.tipo_danio_persona = CStr(WS.Cells(r0 + 10, col).Value)
+        e.dias_perdidos = WS.Cells(r0 + 11, col).Value
+        e.atencion_medica = CStr(WS.Cells(r0 + 12, col).Value)
+        e.in_itinere = CStr(WS.Cells(r0 + 13, col).Value)
+        e.tipo_afectacion = CStr(WS.Cells(r0 + 14, col).Value)
+        e.parte_afectada = CStr(WS.Cells(r0 + 15, col).Value)
+        If anyValue Then
+            Dim newId As String
+            newId = clsPersonaRepo.SaveEntity(e)
+            WS.Cells(r0 + 0, col).Value = newId
+            WS.Cells(r0 + 1, col).Value = idInc
+            countSaved = countSaved + 1
+        End If
+        col = col + 1
+    Loop
+    ReadAndSavePersonas = countSaved
+    Exit Function
+fin:
+    ReadAndSavePersonas = -1
+End Function
+
+' ==== Sección Vehículos ====
+Private Function VehiculosStartRow() As Long
+    VehiculosStartRow = PersonasStartRow() + 18
+End Function
+
+Private Sub LayoutVehiculosSection(WS As Worksheet)
+    Dim r0 As Long: r0 = VehiculosStartRow()
+    WS.Range("B" & r0 - 1).Value = "Vehículos"
+    Dim labels As Variant
+    labels = Array( _
+        "id_vehiculo", "id_incidente", "tipo_vehiculo", "duenio_vehiculo", "uso_vehiculo", _
+        "posee_patente", "numero_patente", "anio_fabricacion_vehiculo", "tarea_vehiculo", "tipo_danio_vehiculo", _
+        "cinturon_seguridad", "cabina_cuchetas", "airbags", "gestion_flotas", "token_conductor", _
+        "marca_dispositivo", "deteccion_fatiga", "camara_trasera", "limitador_velocidad", "camara_delantera", _
+        "camara_punto_ciego", "camara_360", "espejo_punto_ciego", "alarma_marcha_atras", "sistema_frenos", _
+        "monitoreo_neumaticos", "proteccion_lateral", "proteccion_trasera", "acondicionador_cabina", "calefaccion_cabina", _
+        "manos_libres_cabina", "kit_alcoholemia", "kit_emergencia", "epps_vehiculo", _
+        "observaciones_vehiculo")
+    Dim i As Long
+    For i = 0 To UBound(labels)
+        WS.Range("B" & (r0 + i)).Value = labels(i)
+    Next i
+    WS.Range("B" & (r0 - 1) & ":B" & (r0 + UBound(labels))).Font.Bold = True
+    WS.Range("B" & r0 & ":B" & (r0 + UBound(labels))).Interior.Color = RGB(245, 245, 245)
+End Sub
+
+Private Sub EnsureAddVehiculoButton(WS As Worksheet)
+    EnsureActionButton WS, "btnAddVehiculo", "G" & (VehiculosStartRow() - 1), 160, 26, "Agregar Vehículo", "AgregarColumnaVehiculo"
+End Sub
+
+Public Sub AgregarColumnaVehiculo()
+    Dim WS As Worksheet: Set WS = EnsureFormSheet()
+    Dim r0 As Long: r0 = VehiculosStartRow()
+    Dim col As Long: col = NextEntityColumn(WS, r0)
+    WS.Cells(r0 - 1, col).Value = "Vehículo " & (col - 2)
+End Sub
+
+Private Function ReadAndSaveVehiculos(WS As Worksheet, ByVal idInc As String) As Long
+    On Error GoTo fin
+    Dim r0 As Long: r0 = VehiculosStartRow()
+    Dim col As Long: col = 3 ' C
+    Dim countSaved As Long: countSaved = 0
+    Do While LenB(CStr(WS.Cells(r0 - 1, col).Value)) > 0 Or LenB(CStr(WS.Cells(r0 + 2, col).Value)) > 0
+        Dim anyValue As Boolean: anyValue = False
+        Dim v As New clsVehiculo
+        v.id_vehiculo = CStr(WS.Cells(r0 + 0, col).Value)
+        v.id_incidente = idInc
+        v.tipo_vehiculo = CStr(WS.Cells(r0 + 2, col).Value): If LenB(v.tipo_vehiculo) > 0 Then anyValue = True
+        v.duenio_vehiculo = CStr(WS.Cells(r0 + 3, col).Value)
+        v.uso_vehiculo = CStr(WS.Cells(r0 + 4, col).Value)
+        v.posee_patente = CStr(WS.Cells(r0 + 5, col).Value)
+        v.numero_patente = CStr(WS.Cells(r0 + 6, col).Value)
+        v.anio_fabricacion_vehiculo = CStr(WS.Cells(r0 + 7, col).Value)
+        v.tarea_vehiculo = CStr(WS.Cells(r0 + 8, col).Value)
+        v.tipo_danio_vehiculo = CStr(WS.Cells(r0 + 9, col).Value)
+        v.cinturon_seguridad = CStr(WS.Cells(r0 + 10, col).Value)
+        v.cabina_cuchetas = CStr(WS.Cells(r0 + 11, col).Value)
+        v.airbags = CStr(WS.Cells(r0 + 12, col).Value)
+        v.gestion_flotas = CStr(WS.Cells(r0 + 13, col).Value)
+        v.token_conductor = CStr(WS.Cells(r0 + 14, col).Value)
+        v.marca_dispositivo = CStr(WS.Cells(r0 + 15, col).Value)
+        v.deteccion_fatiga = CStr(WS.Cells(r0 + 16, col).Value)
+        v.camara_trasera = CStr(WS.Cells(r0 + 17, col).Value)
+        v.limitador_velocidad = CStr(WS.Cells(r0 + 18, col).Value)
+        v.camara_delantera = CStr(WS.Cells(r0 + 19, col).Value)
+        v.camara_punto_ciego = CStr(WS.Cells(r0 + 20, col).Value)
+        v.camara_360 = CStr(WS.Cells(r0 + 21, col).Value)
+        v.espejo_punto_ciego = CStr(WS.Cells(r0 + 22, col).Value)
+        v.alarma_marcha_atras = CStr(WS.Cells(r0 + 23, col).Value)
+        v.sistema_frenos = CStr(WS.Cells(r0 + 24, col).Value)
+        v.monitoreo_neumaticos = CStr(WS.Cells(r0 + 25, col).Value)
+        v.proteccion_lateral = CStr(WS.Cells(r0 + 26, col).Value)
+        v.proteccion_trasera = CStr(WS.Cells(r0 + 27, col).Value)
+        v.acondicionador_cabina = CStr(WS.Cells(r0 + 28, col).Value)
+        v.calefaccion_cabina = CStr(WS.Cells(r0 + 29, col).Value)
+        v.manos_libres_cabina = CStr(WS.Cells(r0 + 30, col).Value)
+        v.kit_alcoholemia = CStr(WS.Cells(r0 + 31, col).Value)
+        v.kit_emergencia = CStr(WS.Cells(r0 + 32, col).Value)
+        v.epps_vehiculo = CStr(WS.Cells(r0 + 33, col).Value)
+        v.observaciones_vehiculo = CStr(WS.Cells(r0 + 34, col).Value)
+        If anyValue Then
+            Dim newId As String
+            newId = clsVehiculoRepo.SaveEntity(v)
+            WS.Cells(r0 + 0, col).Value = newId
+            WS.Cells(r0 + 1, col).Value = idInc
+            countSaved = countSaved + 1
+        End If
+        col = col + 1
+    Loop
+    ReadAndSaveVehiculos = countSaved
+    Exit Function
+fin:
+    ReadAndSaveVehiculos = -1
+End Function
+
 Public Sub AbrirFormularioIncidenteEnHoja()
     SetupESVWorkbook
     Dim WS As Worksheet
@@ -114,6 +294,10 @@ Public Sub AbrirFormularioIncidenteEnHoja()
     ApplyValidations WS
     EnsureGuardarButton WS
     EstilizarFormularioIncidente
+    LayoutPersonasSection WS
+    LayoutVehiculosSection WS
+    EnsureAddPersonaButton WS
+    EnsureAddVehiculoButton WS
     WS.Activate
 End Sub
 
@@ -181,7 +365,14 @@ Public Sub GuardarIncidenteDesdeHoja()
     Dim id As String
     id = clsIncidenteRepo.SaveEntity(e)
     WS.Range("C2").value = id
-    MsgBox "Incidente guardado: " & id, vbInformation
+    Dim cantP As Long, cantV As Long
+    cantP = ReadAndSavePersonas(WS, id)
+    cantV = ReadAndSaveVehiculos(WS, id)
+    If cantP >= 0 Then WS.Range("C19").Value = cantP
+    If cantV >= 0 Then WS.Range("C20").Value = cantV
+    MsgBox "Incidente guardado: " & id & vbCrLf & _
+            "Personas guardadas: " & cantP & vbCrLf & _
+            "Vehículos guardados: " & cantV, vbInformation
 End Sub
 
 Public Sub NuevoIncidenteEnHoja()
