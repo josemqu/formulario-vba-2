@@ -1,3 +1,4 @@
+<!-- saved from url=(0014)about:internet -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,6 +38,26 @@
   var s = lat + "," + lng;
   document.title = "coords_str:" + s;
 }
+
+    // Permite que el host (VBA) posicione el marcador
+    function setMarkerFromHost(lat, lng) {
+      if (marker) map.removeLayer(marker);
+      marker = L.marker([lat, lng]).addTo(map);
+      try { map.setView([lat, lng], map.getZoom()); } catch (e) {}
+    }
+
+    // Acepta un string, por ejemplo "-34.6,-58.38" o "-34,6;-58,38"
+    function setMarkerFromHostText(s) {
+      if (!s) return;
+      var sep = s.indexOf(';') !== -1 ? ';' : ',';
+      var parts = s.split(sep);
+      if (parts.length !== 2) return;
+      var lat = parseFloat(String(parts[0]).replace(',', '.'));
+      var lng = parseFloat(String(parts[1]).replace(',', '.'));
+      if (isFinite(lat) && isFinite(lng)) {
+        setMarkerFromHost(lat, lng);
+      }
+    }
 
   </script>
 </body>
