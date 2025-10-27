@@ -60,7 +60,7 @@ Public Sub SetupESVWorkbook()
     ' MsgBox "Estructura creada/actualizada.", vbInformation
 End Sub
 
-Private Sub SetupCatalogos(WS As Worksheet)
+Public Sub SetupCatalogos(WS As Worksheet)
     ' Comunes
     EnsureCatalog WS, "A", "cat_si_no_na", Array("SI", "NO", "NA")
 
@@ -108,7 +108,7 @@ Private Sub SetupCatalogos(WS As Worksheet)
     EnsureCatalog WS, "BK", "cat_rango_temperaturas"
 End Sub
 
-Private Sub AddOrUpdateName(nameText As String, refersToRng As Range)
+Public Sub AddOrUpdateName(nameText As String, refersToRng As Range)
     On Error Resume Next
     Dim nm As name
     Set nm = ThisWorkbook.Names(nameText)
@@ -120,7 +120,7 @@ Private Sub AddOrUpdateName(nameText As String, refersToRng As Range)
     End If
 End Sub
 
-Private Sub EnsureCatalog(WS As Worksheet, colLetter As String, header As String, Optional defaults As Variant)
+Public Sub EnsureCatalog(WS As Worksheet, colLetter As String, header As String, Optional defaults As Variant)
     Dim hdrCell As Range, firstData As Range, lastCell As Range, dataRng As Range
     Set hdrCell = WS.Range(colLetter & "1")
     hdrCell.value = header
