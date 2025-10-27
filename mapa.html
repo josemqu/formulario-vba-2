@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mapa VBA</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    html, body, #map { height: 100%; margin: 0; padding: 0; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script>
+    var map = L.map('map').setView([-34.6037, -58.3816], 12); // Buenos Aires
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19
+    }).addTo(map);
+
+    var marker;
+
+    map.on('click', function (e) {
+      var lat = e.latlng.lat;
+      var lng = e.latlng.lng;
+
+      if (marker) map.removeLayer(marker);
+      marker = L.marker([lat, lng]).addTo(map);
+
+      // Enviar como string a VBA vía TitleChange
+      reportCoordsString(lat, lng);
+    });
+
+    function reportCoordsString(lat, lng) {
+  // Formato string: "lat,lng". Ajusta precisión si quieres.
+  var s = lat + "," + lng;
+  document.title = "coords_str:" + s;
+}
+
+  </script>
+</body>
+</html>
