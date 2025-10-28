@@ -4,7 +4,7 @@ Private Sub Worksheet_Change(ByVal Target As Range)
     On Error GoTo fin
     If Target Is Nothing Then Exit Sub
 
-    ' Tomar columnas afectadas en esta edición
+    ' Tomar columnas afectadas en esta edicion
     Dim cols As Object
     Set cols = CreateObject("Scripting.Dictionary")
 
@@ -17,7 +17,7 @@ Private Sub Worksheet_Change(ByVal Target As Range)
 
     Dim colNum As Variant
     For Each colNum In cols.Keys
-        ' Leer encabezado en fila 1 de esa columna como nombre del catálogo
+        ' Leer encabezado en fila 1 de esa columna como nombre del catalogo
         Dim header As String
         header = CStr(Me.Cells(1, CLng(colNum)).value)
 
@@ -25,7 +25,7 @@ Private Sub Worksheet_Change(ByVal Target As Range)
             ' Obtener letra de columna (por ejemplo: "A", "BC", etc.)
             Dim colLetter As String
             colLetter = Split(Me.Cells(1, CLng(colNum)).Address(False, False), CStr(Me.Cells(1, CLng(colNum)).Row))(0)
-            ' Actualizar rango y nombres (minúsculas y mayúsculas)
+            ' Actualizar rango y nombres (minusculas y mayusculas)
             modSetup.EnsureCatalog Me, colLetter, header
         End If
     Next colNum

@@ -11,7 +11,7 @@ Private Sub Worksheet_Change(ByVal Target As Range)
     Debug.Print "Change fired: "; Target.Address
     On Error GoTo ExitHandler
 
-    ' Dispara solo si cambió C2 (ID)
+    ' Dispara solo si cambio C2 (ID)
     If Application.Intersect(Target, Me.Range("C2")) Is Nothing Then Exit Sub
 
     Application.EnableEvents = False

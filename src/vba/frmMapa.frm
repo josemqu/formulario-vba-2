@@ -16,9 +16,15 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub UserForm_Initialize()
-    Dim htmlPath As String
-    htmlPath = "C:\web\formulario-vba-2\mapa.html"
-    Me.wbMapa.Navigate htmlPath
+    Me.wbMapa.Navigate "about:blank"
+    Do While Me.wbMapa.Document Is Nothing
+        DoEvents
+    Loop
+    With Me.wbMapa.Document
+        .Open
+        .Write GetMapaHtml()
+        .Close
+    End With
 End Sub
 
 Private Sub wbMapa_DocumentComplete(ByVal pDisp As Object, URL As Variant)
@@ -32,7 +38,7 @@ Private Sub wbMapa_DocumentComplete(ByVal pDisp As Object, URL As Variant)
     ' Escapar comilla simple para el JS
     coords = Replace(coords, "'", "\'")
 
-    ' Llama a la función del HTML para ubicar el marcador
+    ' Llama a la funcion del HTML para ubicar el marcador
     Dim js As String
     js = "setMarkerFromHostText('" & coords & "');"
     Me.wbMapa.Object.Document.parentWindow.execScript js, "JavaScript"

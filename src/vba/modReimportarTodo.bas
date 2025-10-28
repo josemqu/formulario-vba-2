@@ -57,10 +57,10 @@ Public Sub ReimportarTodoElCodigo()
         f = Dir
     Loop
 
-    ' Paso 4: Corregir si alguna clase se importo como módulo estandar por error
+    ' Paso 4: Corregir si alguna clase se importo como modulo estándar por error
     FixMisImportedClasses vbProj
 
-    ' Paso 5: Limpiar encabezados invalidos en clases (si los hubiera)
+    ' Paso 5: Limpiar encabezados inválidos en clases (si los hubiera)
     For i = 1 To vbProj.VBComponents.Count
         Set comp = vbProj.VBComponents(i)
         If comp.Type = CT_CLASS_MODULE Then
@@ -203,16 +203,16 @@ Private Function NormalizeLineEndings(ByVal s As String) As String
 End Function
 
 Public Sub CleanClassHeaders(cm As Object)
-    ' Elimina, si existen, líneas de encabezado no válidas dentro del editor
-    ' como: VERSION 1.0 CLASS / BEGIN / END al inicio del módulo
+    ' Elimina, si existen, lineas de encabezado no válidas dentro del editor
+    ' como: VERSION 1.0 CLASS / BEGIN / END al inicio del modulo
     Dim maxCheck As Long: maxCheck = Application.WorksheetFunction.Min(10, cm.CountOfLines)
     Dim i As Long
     Dim removed As Boolean
-    ' Repetir hasta que ya no encuentre encabezados en las primeras líneas
+    ' Repetir hasta que ya no encuentre encabezados en las primeras lineas
     Do
         removed = False
         If cm.CountOfLines = 0 Then Exit Do
-        ' Revisar primeras líneas posibles del encabezado exportado
+        ' Revisar primeras lineas posibles del encabezado exportado
         For i = 1 To maxCheck
             Dim ln As String
             ln = Trim$(cm.lines(i, 1))

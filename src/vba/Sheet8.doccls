@@ -12,7 +12,7 @@ Public Sub RefreshAllValidations()
     Application.EnableEvents = False
     Application.ScreenUpdating = False
 
-    ' Solo celdas que ya tienen validación
+    ' Solo celdas que ya tienen validacion
     On Error Resume Next
     Set rng = WS.Cells.SpecialCells(xlCellTypeAllValidation)
     On Error GoTo 0
@@ -27,7 +27,7 @@ Public Sub RefreshAllValidations()
         Dim errTitle As String, errMsg As String
         Dim inTitle As String, inMsg As String
 
-        ' Leer propiedades con protección por si alguna propiedad falla
+        ' Leer propiedades con proteccion por si alguna propiedad falla
         On Error Resume Next
         With c.Validation
             vType = .Type
@@ -46,7 +46,7 @@ Public Sub RefreshAllValidations()
         End With
         On Error GoTo 0
 
-        ' Borrar validación previa
+        ' Borrar validacion previa
         On Error Resume Next
         c.Validation.Delete
         On Error GoTo 0
@@ -58,7 +58,7 @@ Public Sub RefreshAllValidations()
         If Err.Number <> 0 Then
             Dim firstErr As Long: firstErr = Err.Number
             Err.Clear
-            ' Si falló, intentar alternativa para listas: reemplazar ; por , dentro de la fórmula (solo si empieza con =)
+            ' Si fallo, intentar alternativa para listas: reemplazar ; por , dentro de la formula (solo si empieza con =)
             If vType = xlValidateList And Len(Trim(f1)) > 0 Then
                 If Left(Trim(f1), 1) = "=" Then
                     Dim altF1 As String
@@ -74,7 +74,7 @@ Public Sub RefreshAllValidations()
                 End If
             End If
 
-            ' Si siguió fallando, intentar añadir sin Formula2 y sin Operator (compatibilidad)
+            ' Si siguio fallando, intentar añadir sin Formula2 y sin Operator (compatibilidad)
             If Not triedAlt Then
                 On Error Resume Next
                 c.Validation.Add Type:=vType, AlertStyle:=vAlert, Formula1:=f1
@@ -89,7 +89,7 @@ Public Sub RefreshAllValidations()
         End If
         On Error GoTo 0
 
-        ' Restaurar propiedades si la validación se creó
+        ' Restaurar propiedades si la validacion se creo
         On Error Resume Next
         With c.Validation
             .InCellDropdown = inCell
@@ -130,7 +130,7 @@ End Sub
 Private Sub Worksheet_SelectionChange(ByVal Target As Range)
     Application.ScreenUpdating = False
 
-    ' Referencias por nombre (más robusto ante inserciones de filas o columnas)
+    ' Referencias por nombre (mas robusto ante inserciones de filas o columnas)
     Dim celdaOcurrencia As Range
     Dim celdaReporte As Range
 
@@ -145,21 +145,21 @@ Private Sub Worksheet_SelectionChange(ByVal Target As Range)
         Exit Sub
     End If
 
-    ' Lógica principal
+    ' Logica principal
     Select Case True
-        ' Si seleccionás la celda con nombre "celdaFechaOcurrencia"
+        ' Si seleccionas la celda con nombre "celdaFechaOcurrencia"
         Case Not Intersect(Target, celdaOcurrencia) Is Nothing
             Me.Columns("F").Hidden = False
             Me.Columns("G").Hidden = True
             Me.Columns("H").Hidden = True
 
-        ' Si seleccionás la celda con nombre "celdaFechaReporte"
+        ' Si seleccionas la celda con nombre "celdaFechaReporte"
         Case Not Intersect(Target, celdaReporte) Is Nothing
             Me.Columns("F").Hidden = True
             Me.Columns("G").Hidden = False
             Me.Columns("H").Hidden = True
 
-        ' Si seleccionás cualquier otra celda
+        ' Si seleccionas cualquier otra celda
         Case Else
             Me.Columns("F").Hidden = True
             Me.Columns("G").Hidden = True
@@ -181,7 +181,7 @@ Private Sub Worksheet_Change(ByVal Target As Range)
     Set celdaProvincia = Me.Range("celdaProvincia")
     Set celdaLocalidad = Me.Range("celdaLocalidad")
 
-    ' Si no se modificó la celda de provincia, salir
+    ' Si no se modifico la celda de provincia, salir
     If Intersect(Target, celdaProvincia) Is Nothing Then Exit Sub
 
     Application.EnableEvents = False
@@ -189,7 +189,7 @@ Private Sub Worksheet_Change(ByVal Target As Range)
     ' Tomar el nuevo valor
     nuevoValor = celdaProvincia.value
 
-    ' Solo limpiar si el valor cambió efectivamente
+    ' Solo limpiar si el valor cambio efectivamente
     If nuevoValor <> valorAnterior Then
         celdaLocalidad.ClearContents
     End If

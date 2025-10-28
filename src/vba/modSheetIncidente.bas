@@ -106,7 +106,7 @@ Private Sub EnsureGuardarButton(WS As Worksheet)
     EnsureActionButton WS, "btnEliminarIncidente", "E6", 120, 32, "Eliminar", "EliminarIncidenteDesdeHoja"
 End Sub
 
-' ==== Sección Personas ====
+' ==== Seccion Personas ====
 Private Function PersonasStartRow() As Long
     PersonasStartRow = 26
 End Function
@@ -124,7 +124,7 @@ Private Sub LayoutPersonasSection(WS As Worksheet)
     For i = 0 To UBound(labels)
         WS.Range("B" & (r0 + i)).value = labels(i)
     Next i
-    ' Ajustes visuales basicos
+    ' Ajustes visuales básicos
     WS.Range("B" & (r0 - 1) & ":B" & (r0 + UBound(labels))).Font.Bold = True
     WS.Range("B" & r0 & ":B" & (r0 + UBound(labels))).Interior.Color = RGB(245, 245, 245)
 End Sub
@@ -138,7 +138,7 @@ Public Sub AgregarColumnaPersona()
     Dim r0 As Long: r0 = PersonasStartRow()
     Dim col As Long: col = NextEntityColumn(WS, r0)
     WS.Cells(r0 - 1, col).value = "Persona " & (col - 2) ' C=3 -> 1
-    ' Número para edad y días
+    ' Número para edad y dias
     WS.Cells(r0 + 4, col).NumberFormat = "0"
     WS.Cells(r0 + 11, col).NumberFormat = "0"
 End Sub
@@ -191,14 +191,14 @@ fin:
     ReadAndSavePersonas = -1
 End Function
 
-' ==== Sección Vehículos ====
+' ==== Seccion Vehiculos ====
 Private Function VehiculosStartRow() As Long
     VehiculosStartRow = PersonasStartRow() + 18
 End Function
 
 Private Sub LayoutVehiculosSection(WS As Worksheet)
     Dim r0 As Long: r0 = VehiculosStartRow()
-    WS.Range("B" & r0 - 1).value = "Vehículos"
+    WS.Range("B" & r0 - 1).value = "Vehiculos"
     Dim labels As Variant
     labels = Array( _
         "id_vehiculo", "id_incidente", "tipo_vehiculo", "duenio_vehiculo", "uso_vehiculo", _
@@ -218,14 +218,14 @@ Private Sub LayoutVehiculosSection(WS As Worksheet)
 End Sub
 
 Private Sub EnsureAddVehiculoButton(WS As Worksheet)
-    EnsureActionButton WS, "btnAddVehiculo", "G" & (VehiculosStartRow() - 1), 160, 26, "Agregar Vehículo", "AgregarColumnaVehiculo"
+    EnsureActionButton WS, "btnAddVehiculo", "G" & (VehiculosStartRow() - 1), 160, 26, "Agregar Vehiculo", "AgregarColumnaVehiculo"
 End Sub
 
 Public Sub AgregarColumnaVehiculo()
     Dim WS As Worksheet: Set WS = EnsureFormSheet()
     Dim r0 As Long: r0 = VehiculosStartRow()
     Dim col As Long: col = NextEntityColumn(WS, r0)
-    WS.Cells(r0 - 1, col).value = "Vehículo " & (col - 2)
+    WS.Cells(r0 - 1, col).value = "Vehiculo " & (col - 2)
 End Sub
 
 Private Function ReadAndSaveVehiculos(WS As Worksheet, ByVal idInc As String) As Long
@@ -339,10 +339,10 @@ Private Function ValidateForm(WS As Worksheet, ByRef messages As Collection) As 
     Dim ok As Boolean: ok = True
     Set messages = New Collection
     If LenB(CStr(WS.Range("C3").value)) = 0 Then ok = False: messages.Add ("Fecha/hora ocurrencia es requerida.")
-    If LenB(CStr(WS.Range("C4").value)) = 0 Then ok = False: messages.Add ("País es requerido.")
+    If LenB(CStr(WS.Range("C4").value)) = 0 Then ok = False: messages.Add ("Pais es requerido.")
     If LenB(CStr(WS.Range("C21").value)) = 0 Then ok = False: messages.Add ("Clase de evento es requerida.")
     If LenB(CStr(WS.Range("C19").value)) > 0 Then If Not IsNumeric(WS.Range("C19").value) Then ok = False: messages.Add ("Cantidad personas debe ser numérico.")
-    If LenB(CStr(WS.Range("C20").value)) > 0 Then If Not IsNumeric(WS.Range("C20").value) Then ok = False: messages.Add ("Cantidad vehículos debe ser numérico.")
+    If LenB(CStr(WS.Range("C20").value)) > 0 Then If Not IsNumeric(WS.Range("C20").value) Then ok = False: messages.Add ("Cantidad vehiculos debe ser numérico.")
     ValidateForm = ok
 End Function
 
@@ -372,7 +372,7 @@ Public Sub GuardarIncidenteDesdeHoja()
     If cantV >= 0 Then WS.Range("C20").value = cantV
     MsgBox "Incidente guardado: " & id & vbCrLf & _
             "Personas guardadas: " & cantP & vbCrLf & _
-            "Vehículos guardados: " & cantV, vbInformation
+            "Vehiculos guardados: " & cantV, vbInformation
 End Sub
 
 Public Sub NuevoIncidenteEnHoja()
@@ -391,7 +391,7 @@ Public Sub EliminarIncidenteDesdeHoja()
         Exit Sub
     End If
     Dim resp As VbMsgBoxResult
-    resp = MsgBox("¿Eliminar el incidente " & id & " de forma permanente?", vbQuestion + vbYesNo + vbDefaultButton2, "Confirmar eliminación")
+    resp = MsgBox("¿Eliminar el incidente " & id & " de forma permanente?", vbQuestion + vbYesNo + vbDefaultButton2, "Confirmar eliminacion")
     If resp <> vbYes Then Exit Sub
     clsIncidenteRepo.DeleteById id
     ClearForm WS

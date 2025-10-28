@@ -23,7 +23,7 @@ Public Sub SetupESVWorkbook()
 
     hInc = Array( _
         "id_incidente", "fecha_hora_ocurrencia", "pais", "provincia", "Buenos_Aires", "CABA", _
-        "Catamarca", "Chaco", "Chubut", "Córdoba", "Corrientes", "Entre_Ríos", "Formosa", _
+        "Catamarca", "Chaco", "Chubut", "Cordoba", "Corrientes", "Entre_Rios", "Formosa", _
         "La_Pampa", "Mendoza", "Misiones", "Neuquen", "Rio_Negro", "Salta", "San_Juan", _
         "San_Luis", "Santa_Cruz", "Santa_Fe", "Santiago", "Tierra_del_Fuego", "Tucuman", _
         "localidad_zona", "coordenadas_geograficas", _

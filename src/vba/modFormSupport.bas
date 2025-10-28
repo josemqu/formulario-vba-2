@@ -1,8 +1,8 @@
 Attribute VB_Name = "modFormSupport"
 Option Explicit
 
-' Carga de catalogos para el formulario frmRegistroESV
-' Nota: se asume que existen Named Ranges en una hoja de "Catalogos".
+' Carga de catálogos para el formulario frmRegistroESV
+' Nota: se asume que existen Named Ranges en una hoja de "Catálogos".
 ' Las rutinas usan frm As Object y On Error Resume Next para no romper si un control aún no existe.
 
 Public Sub LoadAllCatalogs(frm As Object)

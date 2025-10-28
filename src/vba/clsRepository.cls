@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-' Repositorio generico sobre ListObjects basado en Dictionary
+' Repositorio generico sobre ListObjects basado en Dictionary (late bound)
 Public Function Save(WS As Worksheet, tableName As String, keyColumn As String, Headers As Variant, data As Object) As String
     Dim lo As ListObject
     Set lo = EnsureTable(WS, tableName, Headers)
