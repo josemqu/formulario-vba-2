@@ -80,7 +80,7 @@ Private Sub EnsureActionButton(WS As Worksheet, ByVal btnName As String, ByVal c
     End If
     If shp Is Nothing Then
         Set shp = WS.Shapes.AddShape(msoShapeRoundedRectangle, WS.Range(cellAddr).Left, WS.Range(cellAddr).Top, w, h)
-        shp.Name = btnName
+        shp.name = btnName
     Else
         shp.Left = WS.Range(cellAddr).Left
         shp.Top = WS.Range(cellAddr).Top
@@ -113,7 +113,7 @@ End Function
 
 Private Sub LayoutPersonasSection(WS As Worksheet)
     Dim r0 As Long: r0 = PersonasStartRow()
-    WS.Range("B" & r0 - 1).Value = "Personas"
+    WS.Range("B" & r0 - 1).value = "Personas"
     Dim labels As Variant
     labels = Array( _
         "id_persona", "id_incidente", "nombre_persona", "apellido_persona", "edad_persona", _
@@ -122,7 +122,7 @@ Private Sub LayoutPersonasSection(WS As Worksheet)
         "tipo_afectacion", "parte_afectada")
     Dim i As Long
     For i = 0 To UBound(labels)
-        WS.Range("B" & (r0 + i)).Value = labels(i)
+        WS.Range("B" & (r0 + i)).value = labels(i)
     Next i
     ' Ajustes visuales básicos
     WS.Range("B" & (r0 - 1) & ":B" & (r0 + UBound(labels))).Font.Bold = True
@@ -137,7 +137,7 @@ Public Sub AgregarColumnaPersona()
     Dim WS As Worksheet: Set WS = EnsureFormSheet()
     Dim r0 As Long: r0 = PersonasStartRow()
     Dim col As Long: col = NextEntityColumn(WS, r0)
-    WS.Cells(r0 - 1, col).Value = "Persona " & (col - 2) ' C=3 -> 1
+    WS.Cells(r0 - 1, col).value = "Persona " & (col - 2) ' C=3 -> 1
     ' Número para edad y días
     WS.Cells(r0 + 4, col).NumberFormat = "0"
     WS.Cells(r0 + 11, col).NumberFormat = "0"
@@ -146,7 +146,7 @@ End Sub
 Private Function NextEntityColumn(WS As Worksheet, headerRow As Long) As Long
     ' Empieza en columna C (3) y avanza hasta la primera vacía en la fila de encabezado
     Dim c As Long: c = 3
-    Do While LenB(CStr(WS.Cells(headerRow - 1, c).Value)) > 0 Or LenB(CStr(WS.Cells(headerRow, c).Value)) > 0
+    Do While LenB(CStr(WS.Cells(headerRow - 1, c).value)) > 0 Or LenB(CStr(WS.Cells(headerRow, c).value)) > 0
         c = c + 1
     Loop
     NextEntityColumn = c
@@ -157,30 +157,30 @@ Private Function ReadAndSavePersonas(WS As Worksheet, ByVal idInc As String) As 
     Dim r0 As Long: r0 = PersonasStartRow()
     Dim col As Long: col = 3 ' C
     Dim countSaved As Long: countSaved = 0
-    Do While LenB(CStr(WS.Cells(r0 - 1, col).Value)) > 0 Or LenB(CStr(WS.Cells(r0 + 2, col).Value)) > 0
+    Do While LenB(CStr(WS.Cells(r0 - 1, col).value)) > 0 Or LenB(CStr(WS.Cells(r0 + 2, col).value)) > 0
         Dim anyValue As Boolean: anyValue = False
         Dim e As New clsPersona
-        e.id_persona = CStr(WS.Cells(r0 + 0, col).Value)
+        e.id_persona = CStr(WS.Cells(r0 + 0, col).value)
         e.id_incidente = idInc
-        e.nombre_persona = CStr(WS.Cells(r0 + 2, col).Value): If LenB(e.nombre_persona) > 0 Then anyValue = True
-        e.apellido_persona = CStr(WS.Cells(r0 + 3, col).Value)
-        e.edad_persona = WS.Cells(r0 + 4, col).Value
-        e.tipo_persona = CStr(WS.Cells(r0 + 5, col).Value)
-        e.rol_persona = CStr(WS.Cells(r0 + 6, col).Value)
-        e.antiguedad_persona = CStr(WS.Cells(r0 + 7, col).Value)
-        e.tarea_operativa = CStr(WS.Cells(r0 + 8, col).Value)
-        e.turno_operativo = CStr(WS.Cells(r0 + 9, col).Value)
-        e.tipo_danio_persona = CStr(WS.Cells(r0 + 10, col).Value)
-        e.dias_perdidos = WS.Cells(r0 + 11, col).Value
-        e.atencion_medica = CStr(WS.Cells(r0 + 12, col).Value)
-        e.in_itinere = CStr(WS.Cells(r0 + 13, col).Value)
-        e.tipo_afectacion = CStr(WS.Cells(r0 + 14, col).Value)
-        e.parte_afectada = CStr(WS.Cells(r0 + 15, col).Value)
+        e.nombre_persona = CStr(WS.Cells(r0 + 2, col).value): If LenB(e.nombre_persona) > 0 Then anyValue = True
+        e.apellido_persona = CStr(WS.Cells(r0 + 3, col).value)
+        e.edad_persona = WS.Cells(r0 + 4, col).value
+        e.tipo_persona = CStr(WS.Cells(r0 + 5, col).value)
+        e.rol_persona = CStr(WS.Cells(r0 + 6, col).value)
+        e.antiguedad_persona = CStr(WS.Cells(r0 + 7, col).value)
+        e.tarea_operativa = CStr(WS.Cells(r0 + 8, col).value)
+        e.turno_operativo = CStr(WS.Cells(r0 + 9, col).value)
+        e.tipo_danio_persona = CStr(WS.Cells(r0 + 10, col).value)
+        e.dias_perdidos = WS.Cells(r0 + 11, col).value
+        e.atencion_medica = CStr(WS.Cells(r0 + 12, col).value)
+        e.in_itinere = CStr(WS.Cells(r0 + 13, col).value)
+        e.tipo_afectacion = CStr(WS.Cells(r0 + 14, col).value)
+        e.parte_afectada = CStr(WS.Cells(r0 + 15, col).value)
         If anyValue Then
             Dim newId As String
             newId = clsPersonaRepo.SaveEntity(e)
-            WS.Cells(r0 + 0, col).Value = newId
-            WS.Cells(r0 + 1, col).Value = idInc
+            WS.Cells(r0 + 0, col).value = newId
+            WS.Cells(r0 + 1, col).value = idInc
             countSaved = countSaved + 1
         End If
         col = col + 1
@@ -198,7 +198,7 @@ End Function
 
 Private Sub LayoutVehiculosSection(WS As Worksheet)
     Dim r0 As Long: r0 = VehiculosStartRow()
-    WS.Range("B" & r0 - 1).Value = "Vehículos"
+    WS.Range("B" & r0 - 1).value = "Vehículos"
     Dim labels As Variant
     labels = Array( _
         "id_vehiculo", "id_incidente", "tipo_vehiculo", "duenio_vehiculo", "uso_vehiculo", _
@@ -211,7 +211,7 @@ Private Sub LayoutVehiculosSection(WS As Worksheet)
         "observaciones_vehiculo")
     Dim i As Long
     For i = 0 To UBound(labels)
-        WS.Range("B" & (r0 + i)).Value = labels(i)
+        WS.Range("B" & (r0 + i)).value = labels(i)
     Next i
     WS.Range("B" & (r0 - 1) & ":B" & (r0 + UBound(labels))).Font.Bold = True
     WS.Range("B" & r0 & ":B" & (r0 + UBound(labels))).Interior.Color = RGB(245, 245, 245)
@@ -225,7 +225,7 @@ Public Sub AgregarColumnaVehiculo()
     Dim WS As Worksheet: Set WS = EnsureFormSheet()
     Dim r0 As Long: r0 = VehiculosStartRow()
     Dim col As Long: col = NextEntityColumn(WS, r0)
-    WS.Cells(r0 - 1, col).Value = "Vehículo " & (col - 2)
+    WS.Cells(r0 - 1, col).value = "Vehículo " & (col - 2)
 End Sub
 
 Private Function ReadAndSaveVehiculos(WS As Worksheet, ByVal idInc As String) As Long
@@ -233,49 +233,49 @@ Private Function ReadAndSaveVehiculos(WS As Worksheet, ByVal idInc As String) As
     Dim r0 As Long: r0 = VehiculosStartRow()
     Dim col As Long: col = 3 ' C
     Dim countSaved As Long: countSaved = 0
-    Do While LenB(CStr(WS.Cells(r0 - 1, col).Value)) > 0 Or LenB(CStr(WS.Cells(r0 + 2, col).Value)) > 0
+    Do While LenB(CStr(WS.Cells(r0 - 1, col).value)) > 0 Or LenB(CStr(WS.Cells(r0 + 2, col).value)) > 0
         Dim anyValue As Boolean: anyValue = False
         Dim v As New clsVehiculo
-        v.id_vehiculo = CStr(WS.Cells(r0 + 0, col).Value)
+        v.id_vehiculo = CStr(WS.Cells(r0 + 0, col).value)
         v.id_incidente = idInc
-        v.tipo_vehiculo = CStr(WS.Cells(r0 + 2, col).Value): If LenB(v.tipo_vehiculo) > 0 Then anyValue = True
-        v.duenio_vehiculo = CStr(WS.Cells(r0 + 3, col).Value)
-        v.uso_vehiculo = CStr(WS.Cells(r0 + 4, col).Value)
-        v.posee_patente = CStr(WS.Cells(r0 + 5, col).Value)
-        v.numero_patente = CStr(WS.Cells(r0 + 6, col).Value)
-        v.anio_fabricacion_vehiculo = CStr(WS.Cells(r0 + 7, col).Value)
-        v.tarea_vehiculo = CStr(WS.Cells(r0 + 8, col).Value)
-        v.tipo_danio_vehiculo = CStr(WS.Cells(r0 + 9, col).Value)
-        v.cinturon_seguridad = CStr(WS.Cells(r0 + 10, col).Value)
-        v.cabina_cuchetas = CStr(WS.Cells(r0 + 11, col).Value)
-        v.airbags = CStr(WS.Cells(r0 + 12, col).Value)
-        v.gestion_flotas = CStr(WS.Cells(r0 + 13, col).Value)
-        v.token_conductor = CStr(WS.Cells(r0 + 14, col).Value)
-        v.marca_dispositivo = CStr(WS.Cells(r0 + 15, col).Value)
-        v.deteccion_fatiga = CStr(WS.Cells(r0 + 16, col).Value)
-        v.camara_trasera = CStr(WS.Cells(r0 + 17, col).Value)
-        v.limitador_velocidad = CStr(WS.Cells(r0 + 18, col).Value)
-        v.camara_delantera = CStr(WS.Cells(r0 + 19, col).Value)
-        v.camara_punto_ciego = CStr(WS.Cells(r0 + 20, col).Value)
-        v.camara_360 = CStr(WS.Cells(r0 + 21, col).Value)
-        v.espejo_punto_ciego = CStr(WS.Cells(r0 + 22, col).Value)
-        v.alarma_marcha_atras = CStr(WS.Cells(r0 + 23, col).Value)
-        v.sistema_frenos = CStr(WS.Cells(r0 + 24, col).Value)
-        v.monitoreo_neumaticos = CStr(WS.Cells(r0 + 25, col).Value)
-        v.proteccion_lateral = CStr(WS.Cells(r0 + 26, col).Value)
-        v.proteccion_trasera = CStr(WS.Cells(r0 + 27, col).Value)
-        v.acondicionador_cabina = CStr(WS.Cells(r0 + 28, col).Value)
-        v.calefaccion_cabina = CStr(WS.Cells(r0 + 29, col).Value)
-        v.manos_libres_cabina = CStr(WS.Cells(r0 + 30, col).Value)
-        v.kit_alcoholemia = CStr(WS.Cells(r0 + 31, col).Value)
-        v.kit_emergencia = CStr(WS.Cells(r0 + 32, col).Value)
-        v.epps_vehiculo = CStr(WS.Cells(r0 + 33, col).Value)
-        v.observaciones_vehiculo = CStr(WS.Cells(r0 + 34, col).Value)
+        v.tipo_vehiculo = CStr(WS.Cells(r0 + 2, col).value): If LenB(v.tipo_vehiculo) > 0 Then anyValue = True
+        v.duenio_vehiculo = CStr(WS.Cells(r0 + 3, col).value)
+        v.uso_vehiculo = CStr(WS.Cells(r0 + 4, col).value)
+        v.posee_patente = CStr(WS.Cells(r0 + 5, col).value)
+        v.numero_patente = CStr(WS.Cells(r0 + 6, col).value)
+        v.anio_fabricacion_vehiculo = CStr(WS.Cells(r0 + 7, col).value)
+        v.tarea_vehiculo = CStr(WS.Cells(r0 + 8, col).value)
+        v.tipo_danio_vehiculo = CStr(WS.Cells(r0 + 9, col).value)
+        v.cinturon_seguridad = CStr(WS.Cells(r0 + 10, col).value)
+        v.cabina_cuchetas = CStr(WS.Cells(r0 + 11, col).value)
+        v.airbags = CStr(WS.Cells(r0 + 12, col).value)
+        v.gestion_flotas = CStr(WS.Cells(r0 + 13, col).value)
+        v.token_conductor = CStr(WS.Cells(r0 + 14, col).value)
+        v.marca_dispositivo = CStr(WS.Cells(r0 + 15, col).value)
+        v.deteccion_fatiga = CStr(WS.Cells(r0 + 16, col).value)
+        v.camara_trasera = CStr(WS.Cells(r0 + 17, col).value)
+        v.limitador_velocidad = CStr(WS.Cells(r0 + 18, col).value)
+        v.camara_delantera = CStr(WS.Cells(r0 + 19, col).value)
+        v.camara_punto_ciego = CStr(WS.Cells(r0 + 20, col).value)
+        v.camara_360 = CStr(WS.Cells(r0 + 21, col).value)
+        v.espejo_punto_ciego = CStr(WS.Cells(r0 + 22, col).value)
+        v.alarma_marcha_atras = CStr(WS.Cells(r0 + 23, col).value)
+        v.sistema_frenos = CStr(WS.Cells(r0 + 24, col).value)
+        v.monitoreo_neumaticos = CStr(WS.Cells(r0 + 25, col).value)
+        v.proteccion_lateral = CStr(WS.Cells(r0 + 26, col).value)
+        v.proteccion_trasera = CStr(WS.Cells(r0 + 27, col).value)
+        v.acondicionador_cabina = CStr(WS.Cells(r0 + 28, col).value)
+        v.calefaccion_cabina = CStr(WS.Cells(r0 + 29, col).value)
+        v.manos_libres_cabina = CStr(WS.Cells(r0 + 30, col).value)
+        v.kit_alcoholemia = CStr(WS.Cells(r0 + 31, col).value)
+        v.kit_emergencia = CStr(WS.Cells(r0 + 32, col).value)
+        v.epps_vehiculo = CStr(WS.Cells(r0 + 33, col).value)
+        v.observaciones_vehiculo = CStr(WS.Cells(r0 + 34, col).value)
         If anyValue Then
             Dim newId As String
             newId = clsVehiculoRepo.SaveEntity(v)
-            WS.Cells(r0 + 0, col).Value = newId
-            WS.Cells(r0 + 1, col).Value = idInc
+            WS.Cells(r0 + 0, col).value = newId
+            WS.Cells(r0 + 1, col).value = idInc
             countSaved = countSaved + 1
         End If
         col = col + 1
@@ -368,8 +368,8 @@ Public Sub GuardarIncidenteDesdeHoja()
     Dim cantP As Long, cantV As Long
     cantP = ReadAndSavePersonas(WS, id)
     cantV = ReadAndSaveVehiculos(WS, id)
-    If cantP >= 0 Then WS.Range("C19").Value = cantP
-    If cantV >= 0 Then WS.Range("C20").Value = cantV
+    If cantP >= 0 Then WS.Range("C19").value = cantP
+    If cantV >= 0 Then WS.Range("C20").value = cantV
     MsgBox "Incidente guardado: " & id & vbCrLf & _
             "Personas guardadas: " & cantP & vbCrLf & _
             "Vehículos guardados: " & cantV, vbInformation

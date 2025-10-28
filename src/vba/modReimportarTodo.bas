@@ -1,3 +1,5 @@
+Attribute VB_Name = "modReimportarTodo"
+
 Option Explicit
 
 ' Requiere referencia: Microsoft Visual Basic for Applications Extensibility 5.3
@@ -88,18 +90,18 @@ Public Sub ForzarClasePorNombre(ByVal compName As String)
     If comp.Type = CT_STD_MODULE Then
         Dim cm As Object: Set cm = comp.CodeModule
         Dim txt As String
-        If cm.CountOfLines > 0 Then txt = cm.Lines(1, cm.CountOfLines)
+        If cm.CountOfLines > 0 Then txt = cm.lines(1, cm.CountOfLines)
         Dim newComp As Object
         Set newComp = vbProj.VBComponents.Add(CT_CLASS_MODULE)
         On Error Resume Next
-        newComp.Name = compName & "_tmp_cls"
+        newComp.name = compName & "_tmp_cls"
         On Error GoTo 0
         Dim cmNew As Object: Set cmNew = newComp.CodeModule
         If cmNew.CountOfLines > 0 Then cmNew.DeleteLines 1, cmNew.CountOfLines
         If LenB(txt) > 0 Then cmNew.AddFromString txt
         On Error Resume Next
         vbProj.VBComponents.Remove comp
-        newComp.Name = compName
+        newComp.name = compName
         On Error GoTo 0
         CleanClassHeaders cmNew
     End If
@@ -115,7 +117,7 @@ Private Sub FixMisImportedClasses(vbProj As Object)
             Set cm = comp.CodeModule
             Dim txt As String
             If cm.CountOfLines > 0 Then
-                txt = cm.Lines(1, cm.CountOfLines)
+                txt = cm.lines(1, cm.CountOfLines)
             Else
                 txt = ""
             End If
@@ -123,11 +125,11 @@ Private Sub FixMisImportedClasses(vbProj As Object)
             If InStr(1, txt, "WithEvents", vbTextCompare) > 0 _
                Or InStr(1, txt, "Attribute VB_PredeclaredId", vbTextCompare) > 0 _
                Or InStr(1, txt, "VERSION 1.0 CLASS", vbTextCompare) > 0 Then
-                Dim oldName As String: oldName = comp.Name
+                Dim oldName As String: oldName = comp.name
                 Dim newComp As Object
                 Set newComp = vbProj.VBComponents.Add(CT_CLASS_MODULE)
                 On Error Resume Next
-                newComp.Name = oldName & "_tmp_cls"
+                newComp.name = oldName & "_tmp_cls"
                 On Error GoTo 0
                 Dim cmNew As Object
                 Set cmNew = newComp.CodeModule
@@ -136,7 +138,7 @@ Private Sub FixMisImportedClasses(vbProj As Object)
                 ' Eliminar el módulo antiguo y renombrar el nuevo con el nombre original
                 On Error Resume Next
                 vbProj.VBComponents.Remove comp
-                newComp.Name = oldName
+                newComp.name = oldName
                 On Error GoTo 0
                 ' Limpieza de encabezados por si quedaron
                 CleanClassHeaders cmNew

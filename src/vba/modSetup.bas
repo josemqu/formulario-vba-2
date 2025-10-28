@@ -1,3 +1,4 @@
+Attribute VB_Name = "modSetup"
 Option Explicit
 
 Private Function EnsureSheet(sheetName As String) As Worksheet
@@ -63,74 +64,67 @@ Public Sub SetupESVWorkbook()
     ' MsgBox "Estructura creada/actualizada.", vbInformation
 End Sub
 
-Public Sub SetupCatalogos(ws As Worksheet)
-    ' Comunes
-    EnsureCatalog ws, "A", "cat_si_no_na", Array("SI", "NO", "NA")
-
-    ' VehÃ­culos (defaults de ejemplo)
-    EnsureCatalog ws, "C", "cat_tipo_vehiculo", Array( _
-        "Bicicleta", "Moto", "Ciclomotor", "Autom" & ChrW(243) & "vil", "Pickup", _
-        "Cami" & ChrW(243) & "n chasis", "Cami" & ChrW(243) & "n con Cisterna", ChrW(211) & "mnibus")
-    EnsureCatalog ws, "E", "cat_duenio_vehiculo", Array("Propio", "Contratista", "Tercero")
-    EnsureCatalog ws, "G", "cat_uso_vehiculo", Array("Comercial", "Particular", "Otro", "No se sabe", "NA")
-
-    ' Incidente (placeholders para carga manual)
-    EnsureCatalog ws, "I", "cat_pais"
-    EnsureCatalog ws, "K", "cat_provincia"
-    EnsureCatalog ws, "L", "cat_Buenos_Aires"
-    EnsureCatalog ws, "M", "cat_CABA"
-    EnsureCatalog ws, "N", "cat_Catamarca"
-    EnsureCatalog ws, "O", "cat_Chaco"
-    EnsureCatalog ws, "P", "cat_Chubut"
-    EnsureCatalog ws, "Q", "cat_Córdoba"
-    EnsureCatalog ws, "R", "cat_Corrientes"
-    EnsureCatalog ws, "S", "cat_Entre_Ríos"
-    EnsureCatalog ws, "T", "cat_Formosa"
-    EnsureCatalog ws, "U", "cat_La_Pampa"
-    EnsureCatalog ws, "V", "cat_Mendoza"
-    EnsureCatalog ws, "W", "cat_Misiones"
-    EnsureCatalog ws, "X", "cat_Neuquen"
-    EnsureCatalog ws, "Y", "cat_Rio_Negro"
-    EnsureCatalog ws, "Z", "cat_Salta"
-    EnsureCatalog ws, "AA", "cat_San_Juan"
-    EnsureCatalog ws, "AB", "cat_San_Luis"
-    EnsureCatalog ws, "AC", "cat_Santa_Cruz"
-    EnsureCatalog ws, "AD", "cat_Santa_Fe"
-    EnsureCatalog ws, "AE", "cat_Santiago"
-    EnsureCatalog ws, "AF", "cat_Tierra_del_Fuego"
-    EnsureCatalog ws, "AG", "cat_Tucuman"
-    EnsureCatalog ws, "AH", "cat_localidad_zona"
-    EnsureCatalog ws, "AI", "cat_uo_incidente"
-    EnsureCatalog ws, "AJ", "cat_uo_accidentado"
-    EnsureCatalog ws, "AK", "cat_clase_evento"
-    EnsureCatalog ws, "AL", "cat_tipo_colision"
-    EnsureCatalog ws, "AM", "cat_nivel_severidad"
-    EnsureCatalog ws, "AN", "cat_clasificacion_esv"
+Public Sub SetupCatalogos(WS As Worksheet)
+    EnsureCatalog WS, "A", "cat_si_no_na"
+    EnsureCatalog WS, "B", "cat_tipo_vehiculo"
+    EnsureCatalog WS, "C", "cat_duenio_vehiculo"
+    EnsureCatalog WS, "D", "cat_uso_vehiculo"
+    EnsureCatalog WS, "E", "cat_pais"
+    EnsureCatalog WS, "F", "cat_provincia"
+    EnsureCatalog WS, "G", "cat_Buenos_Aires"
+    EnsureCatalog WS, "H", "cat_CABA"
+    EnsureCatalog WS, "I", "cat_Catamarca"
+    EnsureCatalog WS, "J", "cat_Chaco"
+    EnsureCatalog WS, "K", "cat_Chubut"
+    EnsureCatalog WS, "L", "cat_Córdoba"
+    EnsureCatalog WS, "M", "cat_Corrientes"
+    EnsureCatalog WS, "N", "cat_Entre_Ríos"
+    EnsureCatalog WS, "O", "cat_Formosa"
+    EnsureCatalog WS, "P", "cat_La_Pampa"
+    EnsureCatalog WS, "Q", "cat_Mendoza"
+    EnsureCatalog WS, "R", "cat_Misiones"
+    EnsureCatalog WS, "S", "cat_Neuquen"
+    EnsureCatalog WS, "T", "cat_Rio_Negro"
+    EnsureCatalog WS, "U", "cat_Salta"
+    EnsureCatalog WS, "V", "cat_San_Juan"
+    EnsureCatalog WS, "W", "cat_San_Luis"
+    EnsureCatalog WS, "X", "cat_Santa_Cruz"
+    EnsureCatalog WS, "Y", "cat_Santa_Fe"
+    EnsureCatalog WS, "Z", "cat_Santiago"
+    EnsureCatalog WS, "AA", "cat_Tierra_del_Fuego"
+    EnsureCatalog WS, "AB", "cat_Tucuman"
+    EnsureCatalog WS, "AC", "cat_localidad_zona"
+    EnsureCatalog WS, "AD", "cat_uo_incidente"
+    EnsureCatalog WS, "AE", "cat_uo_accidentado"
+    EnsureCatalog WS, "AF", "cat_clase_evento"
+    EnsureCatalog WS, "AG", "cat_tipo_colision"
+    EnsureCatalog WS, "AH", "cat_nivel_severidad"
+    EnsureCatalog WS, "AI", "cat_clasificacion_esv"
 
     ' Personas (placeholders)
-    EnsureCatalog ws, "AA", "cat_tipo_persona"
-    EnsureCatalog ws, "AC", "cat_rol_persona"
-    EnsureCatalog ws, "AE", "cat_antiguedad_persona"
-    EnsureCatalog ws, "AG", "cat_tarea_operativa"
-    EnsureCatalog ws, "AI", "cat_turno_operativo"
-    EnsureCatalog ws, "AJ", "cat_tipo_danio_persona"
-    EnsureCatalog ws, "AK", "cat_tipo_afectacion"
-    EnsureCatalog ws, "AL", "cat_parte_afectada"
+    EnsureCatalog WS, "AJ", "cat_tipo_persona"
+    EnsureCatalog WS, "AK", "cat_rol_persona"
+    EnsureCatalog WS, "AL", "cat_antiguedad_persona"
+    EnsureCatalog WS, "AM", "cat_tarea_operativa"
+    EnsureCatalog WS, "AN", "cat_turno_operativo"
+    EnsureCatalog WS, "AO", "cat_tipo_danio_persona"
+    EnsureCatalog WS, "AP", "cat_tipo_afectacion"
+    EnsureCatalog WS, "AQ", "cat_parte_afectada"
 
     ' VehÃ­culo adicionales (placeholders)
-    EnsureCatalog ws, "AP", "cat_tarea_vehiculo"
-    EnsureCatalog ws, "AQ", "cat_tipo_danio_vehiculo"
+    EnsureCatalog WS, "AR", "cat_tarea_vehiculo"
+    EnsureCatalog WS, "AS", "cat_tipo_danio_vehiculo"
 
     ' Factores (placeholders)
-    EnsureCatalog ws, "AR", "cat_tipo_superficie"
-    EnsureCatalog ws, "AS", "cat_tipo_ruta"
-    EnsureCatalog ws, "AY", "cat_densidad_trafico"
-    EnsureCatalog ws, "BA", "cat_condicion_ruta"
-    EnsureCatalog ws, "BC", "cat_iluminacion_ruta"
-    EnsureCatalog ws, "BE", "cat_senalizacion_ruta"
-    EnsureCatalog ws, "BG", "cat_geometria_ruta"
-    EnsureCatalog ws, "BI", "cat_condiciones_climaticas"
-    EnsureCatalog ws, "BK", "cat_rango_temperaturas"
+    EnsureCatalog WS, "AT", "cat_tipo_superficie"
+    EnsureCatalog WS, "AU", "cat_tipo_ruta"
+    EnsureCatalog WS, "AV", "cat_densidad_trafico"
+    EnsureCatalog WS, "AW", "cat_condicion_ruta"
+    EnsureCatalog WS, "AX", "cat_iluminacion_ruta"
+    EnsureCatalog WS, "AY", "cat_senalizacion_ruta"
+    EnsureCatalog WS, "AZ", "cat_geometria_ruta"
+    EnsureCatalog WS, "BA", "cat_condiciones_climaticas"
+    EnsureCatalog WS, "BB", "cat_rango_temperaturas"
 End Sub
 
 Public Sub AddOrUpdateName(nameText As String, refersToRng As Range)
@@ -145,24 +139,24 @@ Public Sub AddOrUpdateName(nameText As String, refersToRng As Range)
     End If
 End Sub
 
-Public Sub EnsureCatalog(ws As Worksheet, colLetter As String, header As String, Optional defaults As Variant)
+Public Sub EnsureCatalog(WS As Worksheet, colLetter As String, header As String, Optional defaults As Variant)
     Dim hdrCell As Range, firstData As Range, lastCell As Range, dataRng As Range
-    Set hdrCell = ws.Range(colLetter & "1")
+    Set hdrCell = WS.Range(colLetter & "1")
     hdrCell.value = header
 
-    Set firstData = ws.Range(colLetter & "2")
+    Set firstData = WS.Range(colLetter & "2")
     ' Buscar Ãºltimo valor en la columna
-    Set lastCell = ws.Cells(ws.Rows.Count, hdrCell.Column).End(xlUp)
+    Set lastCell = WS.Cells(WS.Rows.Count, hdrCell.Column).End(xlUp)
     If lastCell.Row < 2 Then
         ' VacÃ­o: sembrar defaults solo si se enviaron
         If Not IsMissing(defaults) Then
             firstData.Resize(UBound(defaults) - LBound(defaults) + 1, 1).value = _
                 Application.WorksheetFunction.Transpose(defaults)
         End If
-        Set dataRng = ws.Range(firstData, ws.Cells(ws.Rows.Count, hdrCell.Column).End(xlUp))
+        Set dataRng = WS.Range(firstData, WS.Cells(WS.Rows.Count, hdrCell.Column).End(xlUp))
     Else
         ' Ya hay datos: respetar existentes
-        Set dataRng = ws.Range(firstData, lastCell)
+        Set dataRng = WS.Range(firstData, lastCell)
     End If
 
     ' Crear/actualizar nombres en minÃºsculas y mayÃºsculas

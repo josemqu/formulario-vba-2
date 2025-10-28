@@ -1,0 +1,36 @@
+﻿Option Explicit
+
+Private Sub Worksheet_Change(ByVal Target As Range)
+    On Error GoTo fin
+    If Target Is Nothing Then Exit Sub
+
+    ' Tomar columnas afectadas en esta edición
+    Dim cols As Object
+    Set cols = CreateObject("Scripting.Dictionary")
+
+    Dim c As Range
+    For Each c In Target.Columns
+        cols(c.Column) = True
+    Next c
+
+    Application.EnableEvents = False
+
+    Dim colNum As Variant
+    For Each colNum In cols.Keys
+        ' Leer encabezado en fila 1 de esa columna como nombre del catálogo
+        Dim header As String
+        header = CStr(Me.Cells(1, CLng(colNum)).value)
+
+        If LenB(header) > 0 Then
+            ' Obtener letra de columna (por ejemplo: "A", "BC", etc.)
+            Dim colLetter As String
+            colLetter = Split(Me.Cells(1, CLng(colNum)).Address(False, False), CStr(Me.Cells(1, CLng(colNum)).Row))(0)
+            ' Actualizar rango y nombres (minúsculas y mayúsculas)
+            modSetup.EnsureCatalog Me, colLetter, header
+        End If
+    Next colNum
+
+fin:
+    On Error Resume Next
+    Application.EnableEvents = True
+End Sub

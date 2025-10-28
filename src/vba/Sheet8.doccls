@@ -1,0 +1,203 @@
+﻿Option Explicit
+
+Public Sub RefreshAllValidations()
+    Dim WS As Worksheet
+    Set WS = ActiveSheet ' <-- Cambialo por ThisWorkbook.Worksheets("Lists") si querés una hoja fija
+
+    Dim rng As Range, c As Range
+    Dim logFail As String
+    Dim triedAlt As Boolean
+
+    On Error GoTo CleanExit
+    Application.EnableEvents = False
+    Application.ScreenUpdating = False
+
+    ' Solo celdas que ya tienen validación
+    On Error Resume Next
+    Set rng = WS.Cells.SpecialCells(xlCellTypeAllValidation)
+    On Error GoTo 0
+
+    If rng Is Nothing Then GoTo CleanExit
+
+    For Each c In rng.Cells
+        Dim vType As Long, vAlert As Long, vOper As Long
+        Dim f1 As String, f2 As String
+        Dim inCell As Boolean, ignBlank As Boolean
+        Dim showErr As Boolean, showInput As Boolean
+        Dim errTitle As String, errMsg As String
+        Dim inTitle As String, inMsg As String
+
+        ' Leer propiedades con protección por si alguna propiedad falla
+        On Error Resume Next
+        With c.Validation
+            vType = .Type
+            vAlert = .AlertStyle
+            vOper = .Operator
+            f1 = .Formula1
+            f2 = .Formula2
+            inCell = .InCellDropdown
+            ignBlank = .IgnoreBlank
+            showErr = .ShowError
+            showInput = .showInput
+            errTitle = .ErrorTitle
+            errMsg = .ErrorMessage
+            inTitle = .InputTitle
+            inMsg = .InputMessage
+        End With
+        On Error GoTo 0
+
+        ' Borrar validación previa
+        On Error Resume Next
+        c.Validation.Delete
+        On Error GoTo 0
+
+        ' Intentar reaplicar original (siempre que tengamos algo)
+        triedAlt = False
+        On Error Resume Next
+        c.Validation.Add Type:=vType, AlertStyle:=vAlert, Operator:=vOper, Formula1:=f1, Formula2:=f2
+        If Err.Number <> 0 Then
+            Dim firstErr As Long: firstErr = Err.Number
+            Err.Clear
+            ' Si falló, intentar alternativa para listas: reemplazar ; por , dentro de la fórmula (solo si empieza con =)
+            If vType = xlValidateList And Len(Trim(f1)) > 0 Then
+                If Left(Trim(f1), 1) = "=" Then
+                    Dim altF1 As String
+                    altF1 = Replace(f1, ";", ",")
+                    On Error Resume Next
+                    c.Validation.Add Type:=vType, AlertStyle:=vAlert, Operator:=vOper, Formula1:=altF1, Formula2:=f2
+                    If Err.Number = 0 Then
+                        f1 = altF1
+                        triedAlt = True
+                    Else
+                        Err.Clear
+                    End If
+                End If
+            End If
+
+            ' Si siguió fallando, intentar añadir sin Formula2 y sin Operator (compatibilidad)
+            If Not triedAlt Then
+                On Error Resume Next
+                c.Validation.Add Type:=vType, AlertStyle:=vAlert, Formula1:=f1
+                If Err.Number = 0 Then
+                    Err.Clear
+                Else
+                    ' registrar fallo y continuar (no interrumpir todo el proceso)
+                    logFail = logFail & c.Address(False, False, xlA1, True) & " (Err:" & firstErr & "); "
+                    Err.Clear
+                End If
+            End If
+        End If
+        On Error GoTo 0
+
+        ' Restaurar propiedades si la validación se creó
+        On Error Resume Next
+        With c.Validation
+            .InCellDropdown = inCell
+            .IgnoreBlank = ignBlank
+            .ShowError = showErr
+            .showInput = showInput
+            .ErrorTitle = errTitle
+            .ErrorMessage = errMsg
+            .InputTitle = inTitle
+            .InputMessage = inMsg
+        End With
+        On Error GoTo 0
+    Next c
+
+CleanExit:
+    Application.ScreenUpdating = True
+    Application.EnableEvents = True
+
+'    If Len(logFail) > 0 Then
+'        MsgBox "Finished with failures in: " & vbCrLf & logFail, vbExclamation, "RefreshAllValidations"
+'    Else
+'        MsgBox "All validations refreshed.", vbInformation, "RefreshAllValidations"
+'    End If
+End Sub
+
+
+Private Sub CommandButton1_Click()
+
+    frmMapa.Show
+    
+End Sub
+
+' Opcional: refrescar al activar la hoja
+Private Sub Worksheet_Activate()
+    RefreshAllValidations
+End Sub
+
+Private Sub Worksheet_SelectionChange(ByVal Target As Range)
+    Application.ScreenUpdating = False
+
+    ' Referencias por nombre (más robusto ante inserciones de filas o columnas)
+    Dim celdaOcurrencia As Range
+    Dim celdaReporte As Range
+
+    On Error Resume Next
+    Set celdaOcurrencia = Me.Range("celdaFechaOcurrencia")
+    Set celdaReporte = Me.Range("celdaFechaReporte")
+    On Error GoTo 0
+
+    ' Validar que los nombres existan antes de ejecutar
+    If celdaOcurrencia Is Nothing Or celdaReporte Is Nothing Then
+        Application.ScreenUpdating = True
+        Exit Sub
+    End If
+
+    ' Lógica principal
+    Select Case True
+        ' Si seleccionás la celda con nombre "celdaFechaOcurrencia"
+        Case Not Intersect(Target, celdaOcurrencia) Is Nothing
+            Me.Columns("F").Hidden = False
+            Me.Columns("G").Hidden = True
+            Me.Columns("H").Hidden = True
+
+        ' Si seleccionás la celda con nombre "celdaFechaReporte"
+        Case Not Intersect(Target, celdaReporte) Is Nothing
+            Me.Columns("F").Hidden = True
+            Me.Columns("G").Hidden = False
+            Me.Columns("H").Hidden = True
+
+        ' Si seleccionás cualquier otra celda
+        Case Else
+            Me.Columns("F").Hidden = True
+            Me.Columns("G").Hidden = True
+            Me.Columns("H").Hidden = False
+    End Select
+
+    Application.ScreenUpdating = True
+End Sub
+
+Private Sub Worksheet_Change(ByVal Target As Range)
+    Dim celdaProvincia As Range
+    Dim celdaLocalidad As Range
+    Dim nuevoValor As Variant
+    Static valorAnterior As Variant
+
+    On Error GoTo salir
+
+    ' Asigna las celdas por nombre (deben estar definidas como nombres de rango)
+    Set celdaProvincia = Me.Range("celdaProvincia")
+    Set celdaLocalidad = Me.Range("celdaLocalidad")
+
+    ' Si no se modificó la celda de provincia, salir
+    If Intersect(Target, celdaProvincia) Is Nothing Then Exit Sub
+
+    Application.EnableEvents = False
+
+    ' Tomar el nuevo valor
+    nuevoValor = celdaProvincia.value
+
+    ' Solo limpiar si el valor cambió efectivamente
+    If nuevoValor <> valorAnterior Then
+        celdaLocalidad.ClearContents
+    End If
+
+    ' Actualizar el valor anterior
+    valorAnterior = nuevoValor
+
+salir:
+    Application.EnableEvents = True
+End Sub
+

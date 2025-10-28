@@ -22,7 +22,7 @@ Private Function NextPersonaId() As String
     If Not lo Is Nothing Then
         Dim rw As ListRow, s As String, n As Long
         For Each rw In lo.ListRows
-            s = CStr(rw.Range.Cells(1, 1).Value)
+            s = CStr(rw.Range.Cells(1, 1).value)
             If LenB(s) > 0 Then
                 If Left$(s, 4) = "PER-" Then
                     n = Val(Mid$(s, 5))

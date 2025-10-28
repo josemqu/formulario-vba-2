@@ -1,22 +1,31 @@
-Option Explicit
+﻿Option Explicit
 
 Private Sub Worksheet_Activate()
+    Application.EnableEvents = True
     On Error Resume Next
     AbrirFormularioIncidenteEnHoja
     On Error GoTo 0
 End Sub
 
-Private Sub Worksheet_Change(ByVal target As Range)
+Private Sub Worksheet_Change(ByVal Target As Range)
+    Debug.Print "Change fired: "; Target.Address
     On Error GoTo ExitHandler
-    ' Detecta cambio en C2 (ID)
-    If Intersect(target, Me.Range("C2")) Is Nothing Then Exit Sub
+
+    ' Dispara solo si cambió C2 (ID)
+    If Application.Intersect(Target, Me.Range("C2")) Is Nothing Then Exit Sub
+
     Application.EnableEvents = False
 
     Dim id As String
     id = CStr(Me.Range("C2").value)
-    If LenB(id) = 0 Then Exit Sub
+
+    If LenB(id) = 0 Then
+        ClearFormulario ' opcional
+        GoTo ExitHandler
+    End If
 
     CargarIncidentePorID id
+
 ExitHandler:
     Application.EnableEvents = True
 End Sub
@@ -29,7 +38,7 @@ Private Sub CargarIncidentePorID(ByVal id As String)
         Exit Sub
     End If
 
-    ' Escribe los campos en las celdas del formulario
+    ' Escribe campos
     Me.Range("C3").value = e.fecha_hora_ocurrencia
     Me.Range("C4").value = e.pais
     Me.Range("C5").value = e.provincia
@@ -52,4 +61,8 @@ Private Sub CargarIncidentePorID(ByVal id As String)
     Me.Range("C22").value = e.tipo_colision
     Me.Range("C23").value = e.nivel_severidad
     Me.Range("C24").value = e.clasificacion_esv
+End Sub
+
+Private Sub ClearFormulario()
+    Me.Range("C3:C24").ClearContents
 End Sub
