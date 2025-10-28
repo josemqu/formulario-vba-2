@@ -72,6 +72,39 @@ Public Sub ReimportarTodoElCodigo()
     '        "- " & clsPath, vbInformation, "Reimportación"
 End Sub
 
+
+Public Sub ForzarClasePorNombre(ByVal compName As String)
+    Dim vbProj As Object
+    Set vbProj = Application.VBE.ActiveVBProject
+    Dim comp As Object
+    On Error Resume Next
+    Set comp = vbProj.VBComponents(compName)
+    On Error GoTo 0
+    If comp Is Nothing Then Exit Sub
+    If comp.Type = CT_CLASS_MODULE Then
+        CleanClassHeaders comp.CodeModule
+        Exit Sub
+    End If
+    If comp.Type = CT_STD_MODULE Then
+        Dim cm As Object: Set cm = comp.CodeModule
+        Dim txt As String
+        If cm.CountOfLines > 0 Then txt = cm.Lines(1, cm.CountOfLines)
+        Dim newComp As Object
+        Set newComp = vbProj.VBComponents.Add(CT_CLASS_MODULE)
+        On Error Resume Next
+        newComp.Name = compName & "_tmp_cls"
+        On Error GoTo 0
+        Dim cmNew As Object: Set cmNew = newComp.CodeModule
+        If cmNew.CountOfLines > 0 Then cmNew.DeleteLines 1, cmNew.CountOfLines
+        If LenB(txt) > 0 Then cmNew.AddFromString txt
+        On Error Resume Next
+        vbProj.VBComponents.Remove comp
+        newComp.Name = compName
+        On Error GoTo 0
+        CleanClassHeaders cmNew
+    End If
+End Sub
+
 Private Sub FixMisImportedClasses(vbProj As Object)
     Dim i As Long
     For i = vbProj.VBComponents.Count To 1 Step -1

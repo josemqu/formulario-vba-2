@@ -8,7 +8,6 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-
 Private WithEvents App As Application
 Attribute App.VB_VarHelpID = -1
 
@@ -44,7 +43,7 @@ Private Sub App_SheetChange(ByVal Sh As Object, ByVal Target As Range)
             If LenB(header) > 0 Then
                 Dim colLetter As String
                 colLetter = Split(Sh.Cells(1, colNum).Address(False, False), CStr(Sh.Cells(1, colNum).Row))(0)
-                modSetup.EnsureCatalog Sh, colLetter, header
+                EnsureCatalog Sh, colLetter, header
             End If
         End If
     Next colNum
