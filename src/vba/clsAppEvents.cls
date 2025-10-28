@@ -8,6 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
+Private WithEvents App As Application
 Public Sub Init()
     Set App = Application
 End Sub
