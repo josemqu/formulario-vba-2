@@ -124,7 +124,7 @@ Private Sub LayoutPersonasSection(WS As Worksheet)
     For i = 0 To UBound(labels)
         WS.Range("B" & (r0 + i)).value = labels(i)
     Next i
-    ' Ajustes visuales básicos
+    ' Ajustes visuales basicos
     WS.Range("B" & (r0 - 1) & ":B" & (r0 + UBound(labels))).Font.Bold = True
     WS.Range("B" & r0 & ":B" & (r0 + UBound(labels))).Interior.Color = RGB(245, 245, 245)
 End Sub
@@ -144,7 +144,7 @@ Public Sub AgregarColumnaPersona()
 End Sub
 
 Private Function NextEntityColumn(WS As Worksheet, headerRow As Long) As Long
-    ' Empieza en columna C (3) y avanza hasta la primera vacía en la fila de encabezado
+    ' Empieza en columna C (3) y avanza hasta la primera vacia en la fila de encabezado
     Dim c As Long: c = 3
     Do While LenB(CStr(WS.Cells(headerRow - 1, c).value)) > 0 Or LenB(CStr(WS.Cells(headerRow, c).value)) > 0
         c = c + 1
