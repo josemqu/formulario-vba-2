@@ -9,6 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 Private WithEvents App As Application
+Attribute App.VB_VarHelpID = -1
 Public Sub Init()
     Set App = Application
 End Sub

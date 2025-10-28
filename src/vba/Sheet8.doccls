@@ -2,7 +2,7 @@
 
 Public Sub RefreshAllValidations()
     Dim WS As Worksheet
-    Set WS = ActiveSheet ' <-- Cambialo por ThisWorkbook.Worksheets("Lists") si querés una hoja fija
+    Set WS = ActiveSheet ' <-- Cambialo por ThisWorkbook.Worksheets("Lists")
 
     Dim rng As Range, c As Range
     Dim logFail As String

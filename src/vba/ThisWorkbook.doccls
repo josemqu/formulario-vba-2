@@ -1,0 +1,6 @@
+﻿Private gApp As clsAppEvents
+
+Private Sub Workbook_Open()
+    Set gApp = New clsAppEvents
+    gApp.Init
+End Sub

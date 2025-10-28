@@ -100,8 +100,6 @@ Public Sub SetupCatalogos(WS As Worksheet)
     EnsureCatalog WS, "AG", "cat_tipo_colision"
     EnsureCatalog WS, "AH", "cat_nivel_severidad"
     EnsureCatalog WS, "AI", "cat_clasificacion_esv"
-
-    ' Personas (placeholders)
     EnsureCatalog WS, "AJ", "cat_tipo_persona"
     EnsureCatalog WS, "AK", "cat_rol_persona"
     EnsureCatalog WS, "AL", "cat_antiguedad_persona"
@@ -110,12 +108,8 @@ Public Sub SetupCatalogos(WS As Worksheet)
     EnsureCatalog WS, "AO", "cat_tipo_danio_persona"
     EnsureCatalog WS, "AP", "cat_tipo_afectacion"
     EnsureCatalog WS, "AQ", "cat_parte_afectada"
-
-    ' VehÃ­culo adicionales (placeholders)
     EnsureCatalog WS, "AR", "cat_tarea_vehiculo"
     EnsureCatalog WS, "AS", "cat_tipo_danio_vehiculo"
-
-    ' Factores (placeholders)
     EnsureCatalog WS, "AT", "cat_tipo_superficie"
     EnsureCatalog WS, "AU", "cat_tipo_ruta"
     EnsureCatalog WS, "AV", "cat_densidad_trafico"
