@@ -31,7 +31,7 @@ Private Sub App_SheetChange(ByVal Sh As Object, ByVal Target As Range)
     Set processed = CreateObject("Scripting.Dictionary")
 
     Application.EnableEvents = False
-    Dim colNum As Long
+    Dim colNum As Variant
     For Each colNum In cols
         If Not processed.Exists(colNum) Then
             processed(colNum) = True
