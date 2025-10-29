@@ -5,10 +5,10 @@ Public Function GetMapaHtml() As String
     s = s & "<html>" & vbCrLf
     s = s & "<head>" & vbCrLf
     s = s & "  <meta charset=""utf-8"">" & vbCrLf
-    s = s & "  <title>Mapa VBA</title>" & vbCrLf
+    s = s & "  <title>Mapa VBA</title><meta http-equiv='X-UA-Compatible' content='IE=Edge'>" & vbCrLf
     s = s & "  <link rel=""stylesheet"" href=""https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"">" & vbCrLf
     s = s & "  <script src=""https://unpkg.com/leaflet@1.9.4/dist/leaflet.js""></script>" & vbCrLf
-    s = s & "  <style>html, body, #map { height: 100%; margin: 0; padding: 0; }</style>" & vbCrLf
+    s = s & "  <style>html, body, #map { height: 100%; margin: 0; padding: 0; } html, body { overflow: hidden; } body { zoom: 1.25; }</style>" & vbCrLf
     s = s & "</head>" & vbCrLf
     s = s & "<body>" & vbCrLf
     s = s & "  <div id=""map""></div>" & vbCrLf

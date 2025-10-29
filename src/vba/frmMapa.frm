@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmMapa 
    Caption         =   "Mapa"
-   ClientHeight    =   6090
+   ClientHeight    =   6170
    ClientLeft      =   -380
    ClientTop       =   -1800
-   ClientWidth     =   9150.001
+   ClientWidth     =   8700.001
    OleObjectBlob   =   "frmMapa.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -30,6 +30,9 @@ End Sub
 
 Private Sub wbMapa_DocumentComplete(ByVal pDisp As Object, URL As Variant)
     On Error Resume Next
+    
+'    Me.wbMapa.Object.ExecWB 63, 2, 150, 0
+'    Me.wbMapa.Object.Document.parentWindow.execScript "try{document.body.style.zoom='125%';}catch(e){}", "JavaScript"
 
     Dim coords As String
     ' Lee "lat,lng" desde Form!celdaCoordenadas
