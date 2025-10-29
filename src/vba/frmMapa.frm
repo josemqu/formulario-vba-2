@@ -15,6 +15,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+
 Private Sub UserForm_Initialize()
     Me.wbMapa.Navigate "about:blank"
     Do While Me.wbMapa.Document Is Nothing

@@ -1,4 +1,4 @@
-Attribute VB_Name = "Module1"
+Attribute VB_Name = "modHtmlMapa"
 Public Function GetMapaHtml() As String
     Dim s As String
     s = s & "<!DOCTYPE html>" & vbCrLf
