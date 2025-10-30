@@ -323,9 +323,15 @@ End Function
 Private Sub ClearForm(WS As Worksheet)
     WS.Range("D5").ClearContents
     WS.Range("D6:D7").ClearContents
-    WS.Range("D8:D15").ClearContents
+    WS.Range("D8:D14").ClearContents
+    WS.Range("D15:D19").ClearContents
     WS.Range("D20:D32").ClearContents
     WS.Range("AC6:AC15").ClearContents
+End Sub
+
+Private Sub ClearSeccionesDinamicas(WS As Worksheet)
+    WS.Range("K5:T19").ClearContents
+    WS.Range("W5:Z38").ClearContents
 End Sub
 
 Private Function ValidateForm(WS As Worksheet, ByRef messages As Collection) As Boolean
@@ -372,7 +378,18 @@ End Sub
 Public Sub NuevoIncidenteEnHoja()
     Dim WS As Worksheet
     Set WS = EnsureFormSheet()
+    On Error GoTo salir
+    Application.ScreenUpdating = False
+    Application.EnableEvents = False
     ClearForm WS
+    ClearSeccionesDinamicas WS
+    OcultarColumnasPersonas
+    OcultarColumnasVehiculos
+    WS.Activate
+salir:
+    MsgBox "Error al limpiar el formulario." & vbCrLf & vbCrLf & "Error: " & err.Number & vbCrLf & "Descripción: " & err.Description & vbCrLf, vbInformation
+    Application.EnableEvents = True
+    Application.ScreenUpdating = True
 End Sub
 
 Public Sub EliminarIncidenteDesdeHoja()
