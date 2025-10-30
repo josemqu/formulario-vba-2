@@ -8,6 +8,8 @@ Private Function Headers() As Variant
         "denuncia_policial", "examen_alcoholemia", "examen_sustancias", "entrevistas_testigos", _
         "accion_inmediata", "consecuencias_seguridad", "fecha_hora_reporte", _
         "cantidad_personas", "cantidad_vehiculos", "clase_evento", "tipo_colision", "nivel_severidad", "clasificacion_esv", _
+        "tipo_superficie", "posee_banquina", "tipo_ruta", "densidad_trafico", "condicion_ruta", "iluminacion_ruta", _
+        "senalizacion_ruta", "geometria_ruta", "condiciones_climaticas", "rango_temperaturas", _
         "creado_por", "creado_en", "actualizado_por", "actualizado_en")
 End Function
 

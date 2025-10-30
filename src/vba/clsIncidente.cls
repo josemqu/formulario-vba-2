@@ -37,6 +37,18 @@ Public creado_en As Variant
 Public actualizado_por As String
 Public actualizado_en As Variant
 
+' Factores Externos integrados en Incidente
+Public tipo_superficie As String
+Public posee_banquina As String
+Public tipo_ruta As String
+Public densidad_trafico As String
+Public condicion_ruta As String
+Public iluminacion_ruta As String
+Public senalizacion_ruta As String
+Public geometria_ruta As String
+Public condiciones_climaticas As String
+Public rango_temperaturas As String
+
 Public Function ToDict() As Object
     Dim d As Object: Set d = CreateObject("Scripting.Dictionary")
     d("id_incidente") = id_incidente
@@ -62,6 +74,16 @@ Public Function ToDict() As Object
     d("tipo_colision") = tipo_colision
     d("nivel_severidad") = nivel_severidad
     d("clasificacion_esv") = clasificacion_esv
+    d("tipo_superficie") = tipo_superficie
+    d("posee_banquina") = posee_banquina
+    d("tipo_ruta") = tipo_ruta
+    d("densidad_trafico") = densidad_trafico
+    d("condicion_ruta") = condicion_ruta
+    d("iluminacion_ruta") = iluminacion_ruta
+    d("senalizacion_ruta") = senalizacion_ruta
+    d("geometria_ruta") = geometria_ruta
+    d("condiciones_climaticas") = condiciones_climaticas
+    d("rango_temperaturas") = rango_temperaturas
     d("creado_por") = creado_por
     d("creado_en") = creado_en
     d("actualizado_por") = actualizado_por
@@ -93,9 +115,18 @@ Public Sub FromDict(d As Object)
     tipo_colision = CStr(Nz(d("tipo_colision"), ""))
     nivel_severidad = CStr(Nz(d("nivel_severidad"), ""))
     clasificacion_esv = CStr(Nz(d("clasificacion_esv"), ""))
+    tipo_superficie = CStr(Nz(d("tipo_superficie"), ""))
+    posee_banquina = CStr(Nz(d("posee_banquina"), ""))
+    tipo_ruta = CStr(Nz(d("tipo_ruta"), ""))
+    densidad_trafico = CStr(Nz(d("densidad_trafico"), ""))
+    condicion_ruta = CStr(Nz(d("condicion_ruta"), ""))
+    iluminacion_ruta = CStr(Nz(d("iluminacion_ruta"), ""))
+    senalizacion_ruta = CStr(Nz(d("senalizacion_ruta"), ""))
+    geometria_ruta = CStr(Nz(d("geometria_ruta"), ""))
+    condiciones_climaticas = CStr(Nz(d("condiciones_climaticas"), ""))
+    rango_temperaturas = CStr(Nz(d("rango_temperaturas"), ""))
     creado_por = CStr(Nz(d("creado_por"), ""))
     creado_en = Nz(d("creado_en"), Empty)
     actualizado_por = CStr(Nz(d("actualizado_por"), ""))
     actualizado_en = Nz(d("actualizado_en"), Empty)
 End Sub
-

@@ -12,25 +12,22 @@ Private Function EnsureSheet(sheetName As String) As Worksheet
 End Function
 
 Public Sub SetupESVWorkbook()
-    Dim wsI As Worksheet, wsP As Worksheet, wsV As Worksheet, wsF As Worksheet, wsC As Worksheet
+    Dim wsI As Worksheet, wsP As Worksheet, wsV As Worksheet, wsC As Worksheet
     Set wsI = EnsureSheet("Incidentes")
     Set wsP = EnsureSheet("Personas")
     Set wsV = EnsureSheet("Vehiculos")
-    Set wsF = EnsureSheet("Factores")
     Set wsC = EnsureSheet("Catalogos")
 
-    Dim hInc, hPer, hVeh, hFac
+    Dim hInc, hPer, hVeh
 
     hInc = Array( _
-        "id_incidente", "fecha_hora_ocurrencia", "pais", "provincia", "Buenos_Aires", "CABA", _
-        "Catamarca", "Chaco", "Chubut", "Cordoba", "Corrientes", "Entre_Rios", "Formosa", _
-        "La_Pampa", "Mendoza", "Misiones", "Neuquen", "Rio_Negro", "Salta", "San_Juan", _
-        "San_Luis", "Santa_Cruz", "Santa_Fe", "Santiago", "Tierra_del_Fuego", "Tucuman", _
-        "localidad_zona", "coordenadas_geograficas", _
+        "id_incidente", "fecha_hora_ocurrencia", "pais", "provincia", "localidad_zona", "coordenadas_geograficas", _
         "lugar_especifico", "uo_incidente", "uo_accidentado", "descripcion_esv", _
         "denuncia_policial", "examen_alcoholemia", "examen_sustancias", "entrevistas_testigos", _
         "accion_inmediata", "consecuencias_seguridad", "fecha_hora_reporte", _
         "cantidad_personas", "cantidad_vehiculos", "clase_evento", "tipo_colision", "nivel_severidad", "clasificacion_esv", _
+        "tipo_superficie", "posee_banquina", "tipo_ruta", "densidad_trafico", "condicion_ruta", "iluminacion_ruta", _
+        "senalizacion_ruta", "geometria_ruta", "condiciones_climaticas", "rango_temperaturas", _
         "creado_por", "creado_en", "actualizado_por", "actualizado_en")
 
     hPer = Array( _
@@ -49,15 +46,10 @@ Public Sub SetupESVWorkbook()
         "manos_libres_cabina", "kit_alcoholemia", "kit_emergencia", "epps_vehiculo", _
         "observaciones_vehiculo", "creado_por", "creado_en", "actualizado_por", "actualizado_en")
 
-    hFac = Array( _
-        "id_factor", "id_incidente", "tipo_superficie", "posee_banquina", "tipo_ruta", "densidad_trafico", _
-        "condicion_ruta", "iluminacion_ruta", "senalizacion_ruta", "geometria_ruta", "condiciones_climaticas", "rango_temperaturas")
-
-    Dim loI As ListObject, loP As ListObject, loV As ListObject, loF As ListObject
+    Dim loI As ListObject, loP As ListObject, loV As ListObject
     Set loI = EnsureTable(wsI, "tbIncidente", hInc)
     Set loP = EnsureTable(wsP, "tbPersona", hPer)
     Set loV = EnsureTable(wsV, "tbVehiculo", hVeh)
-    Set loF = EnsureTable(wsF, "tbFactores", hFac)
 
     SetupCatalogos wsC
 
@@ -139,10 +131,10 @@ Public Sub EnsureCatalog(WS As Worksheet, colLetter As String, header As String,
     hdrCell.value = header
 
     Set firstData = WS.Range(colLetter & "2")
-    ' Buscar Ãºltimo valor en la columna
+    ' Buscar ultimo valor en la columna
     Set lastCell = WS.Cells(WS.Rows.Count, hdrCell.Column).End(xlUp)
     If lastCell.Row < 2 Then
-        ' VacÃ­o: sembrar defaults solo si se enviaron
+        ' Vacio: sembrar defaults solo si se enviaron
         If Not IsMissing(defaults) Then
             firstData.Resize(UBound(defaults) - LBound(defaults) + 1, 1).value = _
                 Application.WorksheetFunction.Transpose(defaults)
@@ -153,7 +145,7 @@ Public Sub EnsureCatalog(WS As Worksheet, colLetter As String, header As String,
         Set dataRng = WS.Range(firstData, lastCell)
     End If
 
-    ' Crear/actualizar nombres en minÃºsculas y mayÃºsculas
+    ' Crear/actualizar nombres en minusculas y mayusculas
     AddOrUpdateName header, dataRng
     AddOrUpdateName UCase(header), dataRng
 End Sub
