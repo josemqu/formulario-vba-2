@@ -378,6 +378,11 @@ End Sub
 Public Sub NuevoIncidenteEnHoja()
     Dim WS As Worksheet
     Set WS = EnsureFormSheet()
+    Dim resp As VbMsgBoxResult
+    resp = MsgBox("Se limpiará el formulario y se perderán los datos no guardados. ¿Deseas continuar?", _
+                  vbQuestion + vbYesNo + vbDefaultButton2, _
+                  "Confirmar limpieza")
+    If resp <> vbYes Then Exit Sub
     On Error GoTo salir
     Application.ScreenUpdating = False
     Application.EnableEvents = False
@@ -387,7 +392,11 @@ Public Sub NuevoIncidenteEnHoja()
     OcultarColumnasVehiculos
     WS.Activate
 salir:
-    MsgBox "Error al limpiar el formulario." & vbCrLf & vbCrLf & "Error: " & err.Number & vbCrLf & "Descripción: " & err.Description & vbCrLf, vbInformation
+    If Err.Number <> 0 Then
+        MsgBox "Error al limpiar el formulario." & vbCrLf & vbCrLf & _
+               "Error: " & Err.Number & vbCrLf & _
+               "Descripción: " & Err.Description, vbExclamation
+    End If
     Application.EnableEvents = True
     Application.ScreenUpdating = True
 End Sub
