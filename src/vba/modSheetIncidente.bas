@@ -86,6 +86,26 @@ Public Sub AgregarColumnaPersona()
     MsgBox "Ya alcanzaste el máximo de 10 columnas de Personas (K:T).", vbInformation
 End Sub
 
+Public Sub EliminarColumnaPersona()
+    Dim WS As Worksheet: Set WS = EnsureFormSheet()
+    Dim firstCol As Long, lastCol As Long
+    firstCol = WS.Columns("K").Column
+    lastCol = WS.Columns("T").Column
+    Dim i As Long, visibleCount As Long, lastVisible As Long
+    visibleCount = 0: lastVisible = -1
+    For i = firstCol To lastCol
+        If WS.Columns(i).Hidden = False Then
+            visibleCount = visibleCount + 1
+            lastVisible = i
+        End If
+    Next i
+    If visibleCount <= 1 Then
+        MsgBox "Debe quedar al menos una columna de Persona visible.", vbInformation
+        Exit Sub
+    End If
+    If lastVisible <> -1 Then WS.Columns(lastVisible).Hidden = True
+End Sub
+
 Private Function NextEntityColumn(WS As Worksheet, headerRow As Long) As Long
     ' Empieza en columna C (3) y avanza hasta la primera vacia en la fila de encabezado
     Dim c As Long: c = 3
@@ -107,7 +127,46 @@ End Function
 
 
 Public Sub AgregarColumnaVehiculo()
-    MsgBox "Agrega un nuevo vehículo manualmente en la hoja 'Form'. Por ahora no se automatiza para no modificar el formato.", vbInformation
+    Dim WS As Worksheet: Set WS = EnsureFormSheet()
+    Dim firstCol As Long, lastCol As Long
+    firstCol = WS.Columns("W").Column ' 23
+    lastCol = WS.Columns("Z").Column ' 26
+    Dim i As Long, visibleCount As Long
+    visibleCount = 0
+    For i = firstCol To lastCol
+        If WS.Columns(i).Hidden = False Then visibleCount = visibleCount + 1
+    Next i
+    If visibleCount = 0 Then
+        WS.Columns(firstCol).Hidden = False
+        Exit Sub
+    End If
+    For i = firstCol To lastCol
+        If WS.Columns(i).Hidden = True Then
+            WS.Columns(i).Hidden = False
+            Exit Sub
+        End If
+    Next i
+    MsgBox "Ya alcanzaste el máximo de columnas de Vehículos (W:Z).", vbInformation
+End Sub
+
+Public Sub EliminarColumnaVehiculo()
+    Dim WS As Worksheet: Set WS = EnsureFormSheet()
+    Dim firstCol As Long, lastCol As Long
+    firstCol = WS.Columns("W").Column
+    lastCol = WS.Columns("Z").Column
+    Dim i As Long, visibleCount As Long, lastVisible As Long
+    visibleCount = 0: lastVisible = -1
+    For i = firstCol To lastCol
+        If WS.Columns(i).Hidden = False Then
+            visibleCount = visibleCount + 1
+            lastVisible = i
+        End If
+    Next i
+    If visibleCount <= 1 Then
+        MsgBox "Debe quedar al menos una columna de Vehículo visible.", vbInformation
+        Exit Sub
+    End If
+    If lastVisible <> -1 Then WS.Columns(lastVisible).Hidden = True
 End Sub
 
 ' ReadAndSaveVehiculos is temporarily skipped.
@@ -274,6 +333,11 @@ End Sub
 Public Sub OcultarColumnasPersonas()
     Dim WS As Worksheet: Set WS = EnsureFormSheet()
     WS.Columns("L:T").Hidden = True
+End Sub
+
+Public Sub OcultarColumnasVehiculos()
+    Dim WS As Worksheet: Set WS = EnsureFormSheet()
+    WS.Columns("X:Z").Hidden = True ' deja W visible como base
 End Sub
 
 ' Styling automation removed as requested.

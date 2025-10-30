@@ -227,6 +227,16 @@ Public Sub BtnAgregarVehiculo()
     modSheetIncidente.AgregarColumnaVehiculo
 End Sub
 
+Public Sub BtnEliminarPersona()
+    On Error Resume Next
+    modSheetIncidente.EliminarColumnaPersona
+End Sub
+
+Public Sub BtnEliminarVehiculo()
+    On Error Resume Next
+    modSheetIncidente.EliminarColumnaVehiculo
+End Sub
+
 Public Sub BtnCargarDesdeID()
     On Error Resume Next
     modSheetIncidente.LoadIncidenteEnHojaDesdeIdActual
