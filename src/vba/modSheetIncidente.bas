@@ -248,12 +248,4 @@ Public Sub LoadIncidenteEnHojaDesdeIdActual()
     WS.Range("AC15").value = e.rango_temperaturas
 End Sub
 
-Public Sub EliminarHojaFormularioAntigua()
-    On Error Resume Next
-    Application.DisplayAlerts = False
-    ThisWorkbook.Worksheets("Formulario").Delete
-    Application.DisplayAlerts = True
-    On Error GoTo 0
-End Sub
-
 ' Styling automation removed as requested.

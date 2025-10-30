@@ -1,4 +1,4 @@
-﻿Option Explicit
+Option Explicit
 
 Public Sub RefreshAllValidations()
     Dim WS As Worksheet
@@ -201,3 +201,33 @@ salir:
     Application.EnableEvents = True
 End Sub
 
+' === Wrapper de botones manuales ===
+Public Sub BtnGuardarIncidente()
+    On Error Resume Next
+    modSheetIncidente.GuardarIncidenteDesdeHoja
+End Sub
+
+Public Sub BtnNuevoIncidente()
+    On Error Resume Next
+    modSheetIncidente.NuevoIncidenteEnHoja
+End Sub
+
+Public Sub BtnEliminarIncidente()
+    On Error Resume Next
+    modSheetIncidente.EliminarIncidenteDesdeHoja
+End Sub
+
+Public Sub BtnAgregarPersona()
+    On Error Resume Next
+    modSheetIncidente.AgregarColumnaPersona
+End Sub
+
+Public Sub BtnAgregarVehiculo()
+    On Error Resume Next
+    modSheetIncidente.AgregarColumnaVehiculo
+End Sub
+
+Public Sub BtnCargarDesdeID()
+    On Error Resume Next
+    modSheetIncidente.LoadIncidenteEnHojaDesdeIdActual
+End Sub

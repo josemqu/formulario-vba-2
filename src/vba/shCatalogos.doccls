@@ -1,4 +1,4 @@
-﻿Option Explicit
+Option Explicit
 
 Private Sub Worksheet_Change(ByVal Target As Range)
     On Error GoTo fin
@@ -33,4 +33,20 @@ Private Sub Worksheet_Change(ByVal Target As Range)
 fin:
     On Error Resume Next
     Application.EnableEvents = True
+End Sub
+
+Public Sub RebuildCatalogNames()
+    ' Recorre todas las columnas con encabezado en fila 1 y regenera los nombres
+    Dim lastCol As Long, col As Long
+    Application.ScreenUpdating = False
+    For col = 1 To Me.Cells(1, Me.Columns.Count).End(xlToLeft).Column
+        Dim header As String
+        header = CStr(Me.Cells(1, col).value)
+        If LenB(header) > 0 Then
+            Dim colLetter As String
+            colLetter = Split(Me.Cells(1, col).Address(False, False), CStr(Me.Cells(1, col).Row))(0)
+            modSetup.EnsureCatalog Me, colLetter, header
+        End If
+    Next col
+    Application.ScreenUpdating = True
 End Sub
