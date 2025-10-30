@@ -169,7 +169,104 @@ Public Sub EliminarColumnaVehiculo()
     If lastVisible <> -1 Then WS.Columns(lastVisible).Hidden = True
 End Sub
 
-' ReadAndSaveVehiculos is temporarily skipped.
+Private Function SaveVisiblePersonas(WS As Worksheet, ByVal idInc As String) As Long
+    On Error GoTo fin
+    Dim firstCol As Long, lastCol As Long
+    firstCol = WS.Columns("K").Column
+    lastCol = WS.Columns("T").Column
+    Dim col As Long, countSaved As Long: countSaved = 0
+    For col = firstCol To lastCol
+        If WS.Columns(col).Hidden = False Then
+            Dim anyValue As Boolean: anyValue = False
+            Dim p As New clsPersona
+            p.id_persona = CStr(WS.Cells(5, col).value)
+            p.id_incidente = idInc
+            p.nombre_persona = CStr(WS.Cells(6, col).value): If LenB(p.nombre_persona) > 0 Then anyValue = True
+            p.apellido_persona = CStr(WS.Cells(7, col).value)
+            p.edad_persona = WS.Cells(8, col).value
+            p.tipo_persona = CStr(WS.Cells(9, col).value)
+            p.rol_persona = CStr(WS.Cells(10, col).value)
+            p.antiguedad_persona = CStr(WS.Cells(11, col).value)
+            p.tarea_operativa = CStr(WS.Cells(12, col).value)
+            p.turno_operativo = CStr(WS.Cells(13, col).value)
+            p.tipo_danio_persona = CStr(WS.Cells(14, col).value)
+            p.dias_perdidos = WS.Cells(15, col).value
+            p.atencion_medica = CStr(WS.Cells(16, col).value)
+            p.in_itinere = CStr(WS.Cells(17, col).value)
+            p.tipo_afectacion = CStr(WS.Cells(18, col).value)
+            p.parte_afectada = CStr(WS.Cells(19, col).value)
+            If anyValue Then
+                Dim newId As String
+                newId = clsPersonaRepo.SaveEntity(p)
+                WS.Cells(5, col).value = newId
+                countSaved = countSaved + 1
+            End If
+        End If
+    Next col
+    SaveVisiblePersonas = countSaved
+    Exit Function
+fin:
+    SaveVisiblePersonas = -1
+End Function
+
+Private Function SaveVisibleVehiculos(WS As Worksheet, ByVal idInc As String) As Long
+    On Error GoTo fin
+    Dim firstCol As Long, lastCol As Long
+    firstCol = WS.Columns("W").Column
+    lastCol = WS.Columns("Z").Column
+    Dim col As Long, countSaved As Long: countSaved = 0
+    For col = firstCol To lastCol
+        If WS.Columns(col).Hidden = False Then
+            Dim anyValue As Boolean: anyValue = False
+            Dim v As New clsVehiculo
+            v.id_vehiculo = CStr(WS.Cells(5, col).value)
+            v.id_incidente = idInc
+            v.tipo_vehiculo = CStr(WS.Cells(6, col).value): If LenB(v.tipo_vehiculo) > 0 Then anyValue = True
+            v.duenio_vehiculo = CStr(WS.Cells(7, col).value)
+            v.uso_vehiculo = CStr(WS.Cells(8, col).value)
+            v.posee_patente = CStr(WS.Cells(9, col).value)
+            v.numero_patente = CStr(WS.Cells(10, col).value)
+            v.anio_fabricacion_vehiculo = CStr(WS.Cells(11, col).value)
+            v.tarea_vehiculo = CStr(WS.Cells(12, col).value)
+            v.tipo_danio_vehiculo = CStr(WS.Cells(13, col).value)
+            v.cinturon_seguridad = CStr(WS.Cells(14, col).value)
+            v.cabina_cuchetas = CStr(WS.Cells(15, col).value)
+            v.airbags = CStr(WS.Cells(16, col).value)
+            v.gestion_flotas = CStr(WS.Cells(17, col).value)
+            v.token_conductor = CStr(WS.Cells(18, col).value)
+            v.marca_dispositivo = CStr(WS.Cells(19, col).value)
+            v.deteccion_fatiga = CStr(WS.Cells(20, col).value)
+            v.camara_trasera = CStr(WS.Cells(21, col).value)
+            v.limitador_velocidad = CStr(WS.Cells(22, col).value)
+            v.camara_delantera = CStr(WS.Cells(23, col).value)
+            v.camara_punto_ciego = CStr(WS.Cells(24, col).value)
+            v.camara_360 = CStr(WS.Cells(25, col).value)
+            v.espejo_punto_ciego = CStr(WS.Cells(26, col).value)
+            v.alarma_marcha_atras = CStr(WS.Cells(27, col).value)
+            v.sistema_frenos = CStr(WS.Cells(28, col).value)
+            v.monitoreo_neumaticos = CStr(WS.Cells(29, col).value)
+            v.proteccion_lateral = CStr(WS.Cells(30, col).value)
+            v.proteccion_trasera = CStr(WS.Cells(31, col).value)
+            v.acondicionador_cabina = CStr(WS.Cells(32, col).value)
+            v.calefaccion_cabina = CStr(WS.Cells(33, col).value)
+            v.manos_libres_cabina = CStr(WS.Cells(34, col).value)
+            v.kit_alcoholemia = CStr(WS.Cells(35, col).value)
+            v.kit_emergencia = CStr(WS.Cells(36, col).value)
+            v.epps_vehiculo = CStr(WS.Cells(37, col).value)
+            v.observaciones_vehiculo = CStr(WS.Cells(38, col).value)
+            If anyValue Then
+                Dim newIdV As String
+                newIdV = clsVehiculoRepo.SaveEntity(v)
+                WS.Cells(5, col).value = newIdV
+                countSaved = countSaved + 1
+            End If
+        End If
+    Next col
+    SaveVisibleVehiculos = countSaved
+    Exit Function
+fin:
+    SaveVisibleVehiculos = -1
+End Function
 
 Public Sub AbrirFormularioIncidenteEnHoja()
     SetupESVWorkbook
@@ -261,7 +358,15 @@ Public Sub GuardarIncidenteDesdeHoja()
     Dim id As String
     id = clsIncidenteRepo.SaveEntity(e)
     WS.Range("D5").value = id
-    MsgBox "Incidente guardado: " & id, vbInformation
+    ' Guardar Personas y Vehiculos visibles
+    Dim cantP As Long, cantV As Long
+    cantP = SaveVisiblePersonas(WS, id)
+    cantV = SaveVisibleVehiculos(WS, id)
+    If cantP >= 0 Then WS.Range("D27").value = cantP
+    If cantV >= 0 Then WS.Range("D28").value = cantV
+    MsgBox "Incidente guardado: " & id & vbCrLf & _
+           "Personas guardadas: " & cantP & vbCrLf & _
+           "Vehiculos guardados: " & cantV, vbInformation
 End Sub
 
 Public Sub NuevoIncidenteEnHoja()
