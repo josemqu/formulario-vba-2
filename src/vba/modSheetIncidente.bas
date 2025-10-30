@@ -60,7 +60,30 @@ End Function
 
 
 Public Sub AgregarColumnaPersona()
-    MsgBox "Agrega una nueva persona manualmente en la hoja 'Form'. Por ahora no se automatiza para no modificar el formato.", vbInformation
+    Dim WS As Worksheet: Set WS = EnsureFormSheet()
+    Dim firstCol As Long, lastCol As Long
+    firstCol = WS.Columns("K").Column ' 11
+    lastCol = WS.Columns("T").Column ' 20
+    Dim i As Long, visibleCount As Long
+    visibleCount = 0
+    ' Contar cuantas columnas K:T estan visibles
+    For i = firstCol To lastCol
+        If WS.Columns(i).Hidden = False Then visibleCount = visibleCount + 1
+    Next i
+    ' Si ninguna visible, mostrar la primera (K)
+    If visibleCount = 0 Then
+        WS.Columns(firstCol).Hidden = False
+        Exit Sub
+    End If
+    ' Buscar la proxima columna oculta para mostrar
+    For i = firstCol To lastCol
+        If WS.Columns(i).Hidden = True Then
+            WS.Columns(i).Hidden = False
+            Exit Sub
+        End If
+    Next i
+    ' Si llegamos aqui, ya estan visibles las 10 columnas
+    MsgBox "Ya alcanzaste el máximo de 10 columnas de Personas (K:T).", vbInformation
 End Sub
 
 Private Function NextEntityColumn(WS As Worksheet, headerRow As Long) As Long
@@ -246,6 +269,11 @@ Public Sub LoadIncidenteEnHojaDesdeIdActual()
     WS.Range("AC13").value = e.geometria_ruta
     WS.Range("AC14").value = e.condiciones_climaticas
     WS.Range("AC15").value = e.rango_temperaturas
+End Sub
+
+Public Sub OcultarColumnasPersonas()
+    Dim WS As Worksheet: Set WS = EnsureFormSheet()
+    WS.Columns("L:T").Hidden = True
 End Sub
 
 ' Styling automation removed as requested.
