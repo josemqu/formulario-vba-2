@@ -3,7 +3,7 @@
 ## 📘 Descripción General
 
 El presente esquema de base de datos define la estructura técnica para el registro, análisis y procesamiento de incidentes de tránsito.  
-Está diseñado para permitir el almacenamiento estructurado de información sobre **personas involucradas**, **vehículos**, **factores externos** y el propio **incidente**, con el objetivo de realizar análisis estadístico y generar reportes dinámicos.
+Está diseñado para permitir el almacenamiento estructurado de información sobre **personas involucradas**, **vehículos** y el propio **incidente**, con el objetivo de realizar análisis estadístico y generar reportes dinámicos.
 
 ---
 
@@ -11,7 +11,7 @@ Está diseñado para permitir el almacenamiento estructurado de información sob
 
 El modelo relacional está compuesto por las siguientes tablas principales:
 
-- **Incidente** → Contiene la información general del suceso (incluye los campos de Factores Externos).
+- **Incidente** → Contiene la información general del suceso.
 - **Persona** → Registra los datos de las personas afectadas (empleados YPF, contratistas o terceros).
 - **Vehiculo** → Detalla las características y condiciones de los vehículos involucrados.
 
@@ -60,6 +60,17 @@ Cada **Incidente** puede tener múltiples **Personas** y **Vehículos** asociado
 | `tipo_colision` | Texto | Tipo de colisión (frontal, lateral, etc.) | Form!D33 |
 | `nivel_severidad` | Enum(S0-S5) | Nivel de severidad según clasificación YPF | Form!D34 |
 | `clasificacion_esv` | Enum(Severo, Potencialmente Severo, Menor) | Clasificación del evento | Form!D35 |
+| `tipo_superficie` | Texto | Tipo de superficie (asfalto, ripio, etc.) | Form!AC6
+| `posee_banquina` | Enum(SI, NO, NA) | Indica si posee banquina | Form!AC7
+| `tipo_ruta` | Texto | Tipo de vía | Form!AC8
+| `velocidad_max_permitida_YPF` | Texto | Velocidad máxima permitida por YPF (10-30Km/h, 31-40km/h, 41-60 Km/h, 61-80 Km/h,81-100 Km/h, >100Km/h) | Form!AC9
+| `densidad_trafico` | Enum(Alta, Media, Baja) | Tráfico al momento del hecho | Form!AC10
+| `condicion_ruta` | Texto | Estado general del camino | Form!AC11
+| `iluminacion_ruta` | Texto | Condición de luz natural o artificial | Form!AC12
+| `senalizacion_ruta` | Texto | Estado de la señalización | Form!AC13
+| `geometria_ruta` | Texto | Curvatura o pendiente | Form!AC14
+| `condiciones_climaticas` | Texto | Condiciones meteorológicas (Seco y templado, Lluvioso, Tormenta, Niebla, Humo sobre la ruta, Calor Extremo, Granizo, Hielo, Viento fuerte) | Form!AC15
+| `rango_temperaturas` | Texto | Rango de temperatura ambiental | Form!AC16
 
 ---
 
@@ -129,20 +140,3 @@ Cada **Incidente** puede tener múltiples **Personas** y **Vehículos** asociado
 | `epps_vehiculo` | Texto | EPPs disponibles para conductor/acompañante. Opciones múltiples: Botines seguridad, Casco y máscara/anteojos, Ropa ignífuga (transp. sustancias peligrosas), Guantes de descarga, Guantes auxilio mecánico. | Form!W38:Z38 |
 | `observaciones_vehiculo` | Texto | Campo libre para observaciones adicionales (daños, nota técnica, referencia a evidencias/ fotos). | Form!W39:Z39 |
 
-
----
-
-### 🟧 Tabla: `FactoresExternos`
-| Campo | Tipo | Descripción | Celda del formulario
-|--------|------|-------------| ------------------
-| `tipo_superficie` | Texto | Tipo de superficie (asfalto, ripio, etc.) | Form!AC6
-| `posee_banquina` | Enum(SI, NO, NA) | Indica si posee banquina | Form!AC7
-| `tipo_ruta` | Texto | Tipo de vía | Form!AC8
-| `velocidad_max_permitida_YPF` | Texto | Velocidad máxima permitida por YPF (10-30Km/h, 31-40km/h, 41-60 Km/h, 61-80 Km/h,81-100 Km/h, >100Km/h) | Form!AC9
-| `densidad_trafico` | Enum(Alta, Media, Baja) | Tráfico al momento del hecho | Form!AC10
-| `condicion_ruta` | Texto | Estado general del camino | Form!AC11
-| `iluminacion_ruta` | Texto | Condición de luz natural o artificial | Form!AC12
-| `senalizacion_ruta` | Texto | Estado de la señalización | Form!AC13
-| `geometria_ruta` | Texto | Curvatura o pendiente | Form!AC14
-| `condiciones_climaticas` | Texto | Condiciones meteorológicas (Seco y templado, Lluvioso, Tormenta, Niebla, Humo sobre la ruta, Calor Extremo, Granizo, Hielo, Viento fuerte) | Form!AC15
-| `rango_temperaturas` | Texto | Rango de temperatura ambiental | Form!AC16
