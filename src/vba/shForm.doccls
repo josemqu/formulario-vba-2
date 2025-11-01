@@ -1,8 +1,8 @@
 Option Explicit
 
 Public Sub RefreshAllValidations()
-    Dim WS As Worksheet
-    Set WS = ThisWorkbook.Worksheets("Form") 
+    Dim ws As Worksheet
+    Set ws = ThisWorkbook.Worksheets("Form")
 
     Dim rng As Range, c As Range
     Dim logFail As String
@@ -14,7 +14,7 @@ Public Sub RefreshAllValidations()
 
     ' Solo celdas que ya tienen validacion
     On Error Resume Next
-    Set rng = WS.UsedRange.SpecialCells(xlCellTypeAllValidation)
+    Set rng = ws.UsedRange.SpecialCells(xlCellTypeAllValidation)
     On Error GoTo 0
 
     If rng Is Nothing Then GoTo CleanExit
@@ -95,7 +95,7 @@ Public Sub RefreshAllValidations()
             .InCellDropdown = inCell
             .IgnoreBlank = ignBlank
             .ShowError = showErr
-            .ShowInput = False
+            .showInput = False
             .ErrorTitle = errTitle
             .ErrorMessage = errMsg
             .InputTitle = inTitle
@@ -185,6 +185,24 @@ CleanExit:
     Application.EnableEvents = True
 End Sub
 
+Private Sub Worksheet_BeforeDoubleClick(ByVal Target As Range, Cancel As Boolean)
+    On Error Resume Next
+    If Target.CountLarge > 1 Then Exit Sub
+    If Not Intersect(Target, Me.Range("W38:Z38")) Is Nothing Then
+        Cancel = True
+        modMultiSelectMenu.ShowMultiSelectMenu Target
+    End If
+End Sub
+
+Private Sub Worksheet_BeforeRightClick(ByVal Target As Range, Cancel As Boolean)
+    On Error Resume Next
+    If Target.CountLarge > 1 Then Exit Sub
+    If Not Intersect(Target, Me.Range("W38:Z38")) Is Nothing Then
+        Cancel = True
+        modMultiSelectMenu.ShowMultiSelectMenu Target
+    End If
+End Sub
+
 Private Sub Worksheet_Change(ByVal Target As Range)
     Dim celdaProvincia As Range
     Dim celdaLocalidad As Range
@@ -212,7 +230,7 @@ Private Sub Worksheet_Change(ByVal Target As Range)
                 Dim allowed As Collection
                 Dim cell As Range
                 Dim isAllowed As Boolean
-                newVal = CStr(Target.Value)
+                newVal = CStr(Target.value)
                 ' Construir lista de valores permitidos de la validación
                 Set allowed = New Collection
                 On Error Resume Next
@@ -223,7 +241,7 @@ Private Sub Worksheet_Change(ByVal Target As Range)
                     If rngSrc Is Nothing Then Set rngSrc = ThisWorkbook.Names(Mid$(src, 2)).RefersToRange
                     If Not rngSrc Is Nothing Then
                         For Each cell In rngSrc.Cells
-                            If LenB(CStr(cell.Value)) > 0 Then allowed.Add CStr(cell.Value)
+                            If LenB(CStr(cell.value)) > 0 Then allowed.Add CStr(cell.value)
                         Next cell
                     End If
                 ElseIf LenB(src) > 0 Then
@@ -248,7 +266,7 @@ Private Sub Worksheet_Change(ByVal Target As Range)
                 If LenB(newVal) > 0 And isAllowed And InStr(1, newVal, ",") = 0 Then
                     Application.EnableEvents = False
                     Application.Undo
-                    oldVal = CStr(Target.Value)
+                    oldVal = CStr(Target.value)
                     exists = False
                     parts = Split(oldVal, ",")
                     For i = LBound(parts) To UBound(parts)
@@ -259,7 +277,7 @@ Private Sub Worksheet_Change(ByVal Target As Range)
                         End If
                     Next i
                     If LenB(oldVal) = 0 Then
-                        Target.Value = newVal
+                        Target.value = newVal
                     ElseIf exists Then
                         Dim out As String
                         out = ""
@@ -273,10 +291,10 @@ Private Sub Worksheet_Change(ByVal Target As Range)
                                 End If
                             End If
                         Next i
-                        Target.Value = out
+                        Target.value = out
                     Else
                         ' agregar el nuevo item (toggle on)
-                        Target.Value = oldVal & ", " & newVal
+                        Target.value = oldVal & ", " & newVal
                     End If
                     Application.EnableEvents = True
                     Exit Sub
@@ -342,3 +360,4 @@ Public Sub BtnCargarDesdeID()
     On Error Resume Next
     modSheetIncidente.LoadIncidenteEnHojaDesdeIdActual
 End Sub
+
