@@ -345,9 +345,9 @@ Private Function ValidateForm(WS As Worksheet, ByRef messages As Collection) As 
     Set messages = New Collection
     If LenB(CStr(WS.Range("D6").value)) = 0 Then ok = False: messages.Add ("Fecha de ocurrencia es requerida.")
     If LenB(CStr(WS.Range("D8").value)) = 0 Then ok = False: messages.Add ("Pais es requerido.")
-    If LenB(CStr(WS.Range("D29").value)) = 0 Then ok = False: messages.Add ("Clase de evento es requerida.")
-    If LenB(CStr(WS.Range("D27").value)) > 0 Then If Not IsNumeric(WS.Range("D27").value) Then ok = False: messages.Add ("Cantidad personas debe ser numérico.")
-    If LenB(CStr(WS.Range("D28").value)) > 0 Then If Not IsNumeric(WS.Range("D28").value) Then ok = False: messages.Add ("Cantidad vehiculos debe ser numérico.")
+    If LenB(CStr(WS.Range("D30").value)) = 0 Then ok = False: messages.Add ("Clase de evento es requerida.")
+    If LenB(CStr(WS.Range("D28").value)) > 0 Then If Not IsNumeric(WS.Range("D28").value) Then ok = False: messages.Add ("Cantidad personas debe ser numérico.")
+    If LenB(CStr(WS.Range("D29").value)) > 0 Then If Not IsNumeric(WS.Range("D29").value) Then ok = False: messages.Add ("Cantidad vehiculos debe ser numérico.")
     ValidateForm = ok
 End Function
 
@@ -374,8 +374,8 @@ Public Sub GuardarIncidenteDesdeHoja()
     Dim cantP As Long, cantV As Long
     cantP = SaveVisiblePersonas(WS, id)
     cantV = SaveVisibleVehiculos(WS, id)
-    If cantP >= 0 Then WS.Range("D27").value = cantP
-    If cantV >= 0 Then WS.Range("D28").value = cantV
+    If cantP >= 0 Then WS.Range("D28").value = cantP
+    If cantV >= 0 Then WS.Range("D29").value = cantV
     MsgBox "Incidente guardado: " & id & vbCrLf & _
            "Personas guardadas: " & cantP & vbCrLf & _
            "Vehiculos guardados: " & cantV, vbInformation
@@ -478,5 +478,3 @@ Public Sub OcultarColumnasVehiculos()
     Dim WS As Worksheet: Set WS = EnsureFormSheet()
     WS.Columns("X:Z").Hidden = True ' deja W visible como base
 End Sub
-
-' Styling automation removed as requested.
