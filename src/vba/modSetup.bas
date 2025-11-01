@@ -115,6 +115,10 @@ Public Sub SetupCatalogos(WS As Worksheet)
     EnsureCatalog WS, "BD", "cat_entrenamiento"
     EnsureCatalog WS, "BE", "cat_aptitud_tarea"
     EnsureCatalog WS, "BF", "cat_epps_vehiculo"
+    EnsureCatalog WS, "BG", "cat_kit_emergencia"
+    EnsureCatalog WS, "BH", "cat_marca_dispositivo"
+    EnsureCatalog WS, "BH", "cat_sistema_frenos"
+    EnsureCatalog WS, "BH", "cat_manos_libres_cabina"
 
 End Sub
 
