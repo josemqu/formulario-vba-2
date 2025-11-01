@@ -1,6 +1,28 @@
-﻿Private gApp As clsAppEvents
+Private gApp As clsAppEvents
 
 Private Sub Workbook_Open()
+    On Error Resume Next
+    Application.EnableEvents = True
+    On Error GoTo 0
     Set gApp = New clsAppEvents
     gApp.Init
+End Sub
+
+Private Sub Workbook_BeforeClose(Cancel As Boolean)
+    On Error Resume Next
+    Set gApp = Nothing
+    On Error GoTo 0
+End Sub
+
+Public Sub UnhookAppEvents()
+    On Error Resume Next
+    Set gApp = Nothing
+    On Error GoTo 0
+End Sub
+
+Public Sub RehookAppEvents()
+    On Error Resume Next
+    Set gApp = New clsAppEvents
+    gApp.Init
+    On Error GoTo 0
 End Sub

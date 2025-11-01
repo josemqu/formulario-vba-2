@@ -14,7 +14,7 @@ Public Sub RefreshAllValidations()
 
     ' Solo celdas que ya tienen validacion
     On Error Resume Next
-    Set rng = WS.Cells.SpecialCells(xlCellTypeAllValidation)
+    Set rng = WS.UsedRange.SpecialCells(xlCellTypeAllValidation)
     On Error GoTo 0
 
     If rng Is Nothing Then GoTo CleanExit
@@ -95,7 +95,7 @@ Public Sub RefreshAllValidations()
             .InCellDropdown = inCell
             .IgnoreBlank = ignBlank
             .ShowError = showErr
-            .showInput = showInput
+            .ShowInput = False
             .ErrorTitle = errTitle
             .ErrorMessage = errMsg
             .InputTitle = inTitle
@@ -124,11 +124,16 @@ End Sub
 
 ' Opcional: refrescar al activar la hoja
 Private Sub Worksheet_Activate()
+    Static didOnce As Boolean
+    If didOnce Then Exit Sub
+    didOnce = True
     RefreshAllValidations
 End Sub
 
 Private Sub Worksheet_SelectionChange(ByVal Target As Range)
+    On Error GoTo CleanExit
     Application.ScreenUpdating = False
+    Application.EnableEvents = False
 
     ' Referencias por nombre (mas robusto ante inserciones de filas o columnas)
     Dim celdaOcurrencia As Range
@@ -141,32 +146,43 @@ Private Sub Worksheet_SelectionChange(ByVal Target As Range)
 
     ' Validar que los nombres existan antes de ejecutar
     If celdaOcurrencia Is Nothing Or celdaReporte Is Nothing Then
-        Application.ScreenUpdating = True
-        Exit Sub
+        GoTo CleanExit
     End If
 
     ' Logica principal
+    If Target.CountLarge > 1 Then GoTo CleanExit
+    ' Ignorar errores transitorios al alternar visibilidad de columnas
+    On Error Resume Next
     Select Case True
         ' Si seleccionas la celda con nombre "celdaFechaOcurrencia"
         Case Not Intersect(Target, celdaOcurrencia) Is Nothing
-            Me.Columns("F").Hidden = False
-            Me.Columns("G").Hidden = True
-            Me.Columns("H").Hidden = True
+            If Me.Columns("F").Hidden Or Not Me.Columns("G").Hidden Or Not Me.Columns("H").Hidden Then
+                Me.Columns("F").Hidden = False
+                Me.Columns("G").Hidden = True
+                Me.Columns("H").Hidden = True
+            End If
 
         ' Si seleccionas la celda con nombre "celdaFechaReporte"
         Case Not Intersect(Target, celdaReporte) Is Nothing
-            Me.Columns("F").Hidden = True
-            Me.Columns("G").Hidden = False
-            Me.Columns("H").Hidden = True
+            If Not Me.Columns("F").Hidden Or Me.Columns("G").Hidden Or Not Me.Columns("H").Hidden Then
+                Me.Columns("F").Hidden = True
+                Me.Columns("G").Hidden = False
+                Me.Columns("H").Hidden = True
+            End If
 
         ' Si seleccionas cualquier otra celda
         Case Else
-            Me.Columns("F").Hidden = True
-            Me.Columns("G").Hidden = True
-            Me.Columns("H").Hidden = False
+            If Not Me.Columns("F").Hidden Or Not Me.Columns("G").Hidden Or Me.Columns("H").Hidden Then
+                Me.Columns("F").Hidden = True
+                Me.Columns("G").Hidden = True
+                Me.Columns("H").Hidden = False
+            End If
     End Select
+    On Error GoTo CleanExit
 
+CleanExit:
     Application.ScreenUpdating = True
+    Application.EnableEvents = True
 End Sub
 
 Private Sub Worksheet_Change(ByVal Target As Range)

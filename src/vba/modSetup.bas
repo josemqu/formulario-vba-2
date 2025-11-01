@@ -111,15 +111,22 @@ Public Sub SetupCatalogos(WS As Worksheet)
     EnsureCatalog WS, "AZ", "cat_geometria_ruta"
     EnsureCatalog WS, "BA", "cat_condiciones_climaticas"
     EnsureCatalog WS, "BB", "cat_rango_temperaturas"
+    EnsureCatalog WS, "BC", "cat_clase_licencia"
+    EnsureCatalog WS, "BD", "cat_entrenamiento"
+    EnsureCatalog WS, "BE", "cat_aptitud_tarea"
+    EnsureCatalog WS, "BF", "cat_epps_vehiculo"
+
 End Sub
 
 Public Sub AddOrUpdateName(nameText As String, refersToRng As Range)
+    Dim wb As Workbook
+    Set wb = refersToRng.Parent.Parent ' Workbook propietario del rango
     On Error Resume Next
-    Dim nm As name
-    Set nm = ThisWorkbook.Names(nameText)
+    Dim nm As Name
+    Set nm = wb.Names(nameText)
     On Error GoTo 0
     If nm Is Nothing Then
-        ThisWorkbook.Names.Add name:=nameText, RefersTo:=refersToRng
+        wb.Names.Add Name:=nameText, RefersTo:=refersToRng
     Else
         nm.RefersTo = refersToRng
     End If

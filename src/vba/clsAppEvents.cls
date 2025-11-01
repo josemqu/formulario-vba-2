@@ -17,7 +17,9 @@ Private Sub App_SheetChange(ByVal Sh As Object, ByVal Target As Range)
     On Error GoTo fin
     If Sh Is Nothing Then Exit Sub
     If TypeName(Sh) <> "Worksheet" Then Exit Sub
-    If Sh.name <> "Catalogos" Then Exit Sub
+    ' Solo actuar en este mismo libro (evitar interferir con otros workbooks)
+    If Not (Sh.Parent Is ThisWorkbook) Then Exit Sub
+    If Sh.Name <> "Catalogos" Then Exit Sub
     If Target Is Nothing Then Exit Sub
 
     Dim cols As Collection
