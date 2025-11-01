@@ -190,7 +190,7 @@ Private Sub Worksheet_BeforeDoubleClick(ByVal Target As Range, Cancel As Boolean
     If Target.CountLarge > 1 Then Exit Sub
     If Not Intersect(Target, Me.Range("W38:Z38")) Is Nothing Then
         Cancel = True
-        modMultiSelectMenu.ShowMultiSelectMenu Target
+        modMultiSelectSupport.ShowMultiSelectForCell Target
     End If
 End Sub
 
@@ -199,7 +199,7 @@ Private Sub Worksheet_BeforeRightClick(ByVal Target As Range, Cancel As Boolean)
     If Target.CountLarge > 1 Then Exit Sub
     If Not Intersect(Target, Me.Range("W38:Z38")) Is Nothing Then
         Cancel = True
-        modMultiSelectMenu.ShowMultiSelectMenu Target
+        modMultiSelectSupport.ShowMultiSelectForCell Target
     End If
 End Sub
 
@@ -215,97 +215,7 @@ Private Sub Worksheet_Change(ByVal Target As Range)
     Set celdaProvincia = Me.Range("celdaProvincia")
     Set celdaLocalidad = Me.Range("celdaLocalidad")
 
-    If Target.CountLarge = 1 Then
-        If Not Intersect(Target, Me.Range("W38:Z38")) Is Nothing Then
-            On Error Resume Next
-            If Target.Validation.Type = xlValidateList Then
-                Dim newVal As String
-                Dim oldVal As String
-                Dim parts() As String
-                Dim i As Long
-                Dim exists As Boolean
-                Dim tmp As String
-                Dim src As String
-                Dim rngSrc As Range
-                Dim allowed As Collection
-                Dim cell As Range
-                Dim isAllowed As Boolean
-                newVal = CStr(Target.value)
-                ' Construir lista de valores permitidos de la validación
-                Set allowed = New Collection
-                On Error Resume Next
-                src = Target.Validation.Formula1
-                If Left$(Trim$(src), 1) = "=" Then
-                    Set rngSrc = Nothing
-                    Set rngSrc = Me.Range(Mid$(src, 2))
-                    If rngSrc Is Nothing Then Set rngSrc = ThisWorkbook.Names(Mid$(src, 2)).RefersToRange
-                    If Not rngSrc Is Nothing Then
-                        For Each cell In rngSrc.Cells
-                            If LenB(CStr(cell.value)) > 0 Then allowed.Add CStr(cell.value)
-                        Next cell
-                    End If
-                ElseIf LenB(src) > 0 Then
-                    parts = Split(src, ",")
-                    For i = LBound(parts) To UBound(parts)
-                        allowed.Add Trim$(parts(i))
-                    Next i
-                End If
-                On Error GoTo 0
-
-                isAllowed = False
-                On Error Resume Next
-                For i = 1 To allowed.Count
-                    If StrComp(allowed(i), newVal, vbTextCompare) = 0 Then
-                        isAllowed = True
-                        Exit For
-                    End If
-                Next i
-                On Error GoTo 0
-
-                ' Si el nuevo valor no está en la lista (edición manual) o contiene coma, no intervenir
-                If LenB(newVal) > 0 And isAllowed And InStr(1, newVal, ",") = 0 Then
-                    Application.EnableEvents = False
-                    Application.Undo
-                    oldVal = CStr(Target.value)
-                    exists = False
-                    parts = Split(oldVal, ",")
-                    For i = LBound(parts) To UBound(parts)
-                        tmp = Trim$(parts(i))
-                        If StrComp(tmp, newVal, vbTextCompare) = 0 Then
-                            exists = True
-                            Exit For
-                        End If
-                    Next i
-                    If LenB(oldVal) = 0 Then
-                        Target.value = newVal
-                    ElseIf exists Then
-                        Dim out As String
-                        out = ""
-                        ' remover el item seleccionado de la lista existente (toggle off)
-                        For i = LBound(parts) To UBound(parts)
-                            tmp = Trim$(parts(i))
-                            If LenB(tmp) > 0 Then
-                                If StrComp(tmp, newVal, vbTextCompare) <> 0 Then
-                                    If LenB(out) > 0 Then out = out & ", "
-                                    out = out & tmp
-                                End If
-                            End If
-                        Next i
-                        Target.value = out
-                    Else
-                        ' agregar el nuevo item (toggle on)
-                        Target.value = oldVal & ", " & newVal
-                    End If
-                    Application.EnableEvents = True
-                    Exit Sub
-                End If
-                ' Si newVal es vacio (borrado manual), permitir limpiar sin restaurar
-                Exit Sub
-            End If
-            On Error GoTo salir
-        End If
-    End If
-
+    
     If Not Intersect(Target, celdaProvincia) Is Nothing Then
         Application.EnableEvents = False
         nuevoValor = celdaProvincia.value
