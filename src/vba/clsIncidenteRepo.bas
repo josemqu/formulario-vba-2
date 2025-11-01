@@ -5,10 +5,10 @@ Private Function Headers() As Variant
     Headers = Array( _
         "id_incidente", "fecha_hora_ocurrencia", "pais", "provincia", "localidad_zona", "coordenadas_geograficas", _
         "lugar_especifico", "uo_incidente", "uo_accidentado", "descripcion_esv", _
-        "denuncia_policial", "examen_alcoholemia", "examen_sustancias", "entrevistas_testigos", _
+        "denuncia_policial", "lugar_denuncia_policial", "examen_alcoholemia", "examen_sustancias", "entrevistas_testigos", _
         "accion_inmediata", "consecuencias_seguridad", "fecha_hora_reporte", _
         "cantidad_personas", "cantidad_vehiculos", "clase_evento", "tipo_colision", "nivel_severidad", "clasificacion_esv", _
-        "tipo_superficie", "posee_banquina", "tipo_ruta", "densidad_trafico", "condicion_ruta", "iluminacion_ruta", _
+        "tipo_superficie", "posee_banquina", "tipo_ruta", "velocidad_max_permitida_YPF", "densidad_trafico", "condicion_ruta", "iluminacion_ruta", _
         "senalizacion_ruta", "geometria_ruta", "condiciones_climaticas", "rango_temperaturas", _
         "creado_por", "creado_en", "actualizado_por", "actualizado_en")
 End Function

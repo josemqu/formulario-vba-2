@@ -6,7 +6,7 @@ Private Function Headers() As Variant
         "id_persona", "id_incidente", "nombre_persona", "apellido_persona", "edad_persona", _
         "tipo_persona", "rol_persona", "antiguedad_persona", "tarea_operativa", "turno_operativo", _
         "tipo_danio_persona", "dias_perdidos", "atencion_medica", "in_itinere", _
-        "tipo_afectacion", "parte_afectada")
+        "tipo_afectacion", "parte_afectada", "clase_licencia", "entrenamiento", "aptitud_tarea")
 End Function
 
 Private Function WS() As Worksheet

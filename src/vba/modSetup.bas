@@ -23,10 +23,10 @@ Public Sub SetupESVWorkbook()
     hInc = Array( _
         "id_incidente", "fecha_hora_ocurrencia", "pais", "provincia", "localidad_zona", "coordenadas_geograficas", _
         "lugar_especifico", "uo_incidente", "uo_accidentado", "descripcion_esv", _
-        "denuncia_policial", "examen_alcoholemia", "examen_sustancias", "entrevistas_testigos", _
+        "denuncia_policial", "lugar_denuncia_policial", "examen_alcoholemia", "examen_sustancias", "entrevistas_testigos", _
         "accion_inmediata", "consecuencias_seguridad", "fecha_hora_reporte", _
         "cantidad_personas", "cantidad_vehiculos", "clase_evento", "tipo_colision", "nivel_severidad", "clasificacion_esv", _
-        "tipo_superficie", "posee_banquina", "tipo_ruta", "densidad_trafico", "condicion_ruta", "iluminacion_ruta", _
+        "tipo_superficie", "posee_banquina", "tipo_ruta", "velocidad_max_permitida_YPF", "densidad_trafico", "condicion_ruta", "iluminacion_ruta", _
         "senalizacion_ruta", "geometria_ruta", "condiciones_climaticas", "rango_temperaturas", _
         "creado_por", "creado_en", "actualizado_por", "actualizado_en")
 
@@ -34,11 +34,11 @@ Public Sub SetupESVWorkbook()
         "id_persona", "id_incidente", "nombre_persona", "apellido_persona", "edad_persona", _
         "tipo_persona", "rol_persona", "antiguedad_persona", "tarea_operativa", "turno_operativo", _
         "tipo_danio_persona", "dias_perdidos", "atencion_medica", "in_itinere", _
-        "tipo_afectacion", "parte_afectada")
+        "tipo_afectacion", "parte_afectada", "clase_licencia", "entrenamiento", "aptitud_tarea")
 
     hVeh = Array( _
         "id_vehiculo", "id_incidente", "tipo_vehiculo", "duenio_vehiculo", "uso_vehiculo", _
-        "posee_patente", "numero_patente", "anio_fabricacion_vehiculo", "tarea_vehiculo", "tipo_danio_vehiculo", _
+        "posee_patente", "numero_patente", "anio_fabricacion_vehiculo", "tarea_vehiculo", "tipo_danio_vehiculo", "estado_vehiculo", _
         "cinturon_seguridad", "cabina_cuchetas", "airbags", "gestion_flotas", "token_conductor", _
         "marca_dispositivo", "deteccion_fatiga", "camara_trasera", "limitador_velocidad", "camara_delantera", _
         "camara_punto_ciego", "camara_360", "espejo_punto_ciego", "alarma_marcha_atras", "sistema_frenos", _

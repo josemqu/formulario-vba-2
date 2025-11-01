@@ -18,6 +18,7 @@ Public numero_patente As String
 Public anio_fabricacion_vehiculo As String
 Public tarea_vehiculo As String
 Public tipo_danio_vehiculo As String
+Public estado_vehiculo As String
 Public cinturon_seguridad As String
 Public cabina_cuchetas As String
 Public airbags As String
@@ -60,6 +61,7 @@ Public Function ToDict() As Object
     d("anio_fabricacion_vehiculo") = anio_fabricacion_vehiculo
     d("tarea_vehiculo") = tarea_vehiculo
     d("tipo_danio_vehiculo") = tipo_danio_vehiculo
+    d("estado_vehiculo") = estado_vehiculo
     d("cinturon_seguridad") = cinturon_seguridad
     d("cabina_cuchetas") = cabina_cuchetas
     d("airbags") = airbags
@@ -103,6 +105,7 @@ Public Sub FromDict(d As Object)
     anio_fabricacion_vehiculo = CStr(Nz(d("anio_fabricacion_vehiculo"), ""))
     tarea_vehiculo = CStr(Nz(d("tarea_vehiculo"), ""))
     tipo_danio_vehiculo = CStr(Nz(d("tipo_danio_vehiculo"), ""))
+    estado_vehiculo = CStr(Nz(d("estado_vehiculo"), ""))
     cinturon_seguridad = CStr(Nz(d("cinturon_seguridad"), ""))
     cabina_cuchetas = CStr(Nz(d("cabina_cuchetas"), ""))
     airbags = CStr(Nz(d("airbags"), ""))

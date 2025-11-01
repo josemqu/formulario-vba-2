@@ -24,6 +24,9 @@ Public atencion_medica As String
 Public in_itinere As String
 Public tipo_afectacion As String
 Public parte_afectada As String
+Public clase_licencia As String
+Public entrenamiento As String
+Public aptitud_tarea As String
 
 Public Function ToDict() As Object
     Dim d As Object: Set d = CreateObject("Scripting.Dictionary")
@@ -43,6 +46,9 @@ Public Function ToDict() As Object
     d("in_itinere") = in_itinere
     d("tipo_afectacion") = tipo_afectacion
     d("parte_afectada") = parte_afectada
+    d("clase_licencia") = clase_licencia
+    d("entrenamiento") = entrenamiento
+    d("aptitud_tarea") = aptitud_tarea
     Set ToDict = d
 End Function
 
@@ -63,5 +69,8 @@ Public Sub FromDict(d As Object)
     in_itinere = CStr(Nz(d("in_itinere"), ""))
     tipo_afectacion = CStr(Nz(d("tipo_afectacion"), ""))
     parte_afectada = CStr(Nz(d("parte_afectada"), ""))
+    clase_licencia = CStr(Nz(d("clase_licencia"), ""))
+    entrenamiento = CStr(Nz(d("entrenamiento"), ""))
+    aptitud_tarea = CStr(Nz(d("aptitud_tarea"), ""))
 End Sub
 

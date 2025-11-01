@@ -17,6 +17,22 @@ Public Function EnsureTable(WS As Worksheet, tableName As String, Headers As Var
         WS.Cells(1, 1).Resize(1, lastCol).value = arr
         Set lo = WS.ListObjects.Add(xlSrcRange, WS.Range(WS.Cells(1, 1), WS.Cells(1, lastCol)), , xlYes)
         lo.name = tableName
+    Else
+        ' Si la tabla existe, agregar cualquier header faltante como nueva columna al final
+        Dim existing As Object
+        Set existing = CreateObject("Scripting.Dictionary")
+        Dim col As ListColumn
+        For Each col In lo.ListColumns
+            existing(UCase$(CStr(col.name))) = True
+        Next col
+        Dim h As Variant
+        For i = LBound(Headers) To UBound(Headers)
+            h = CStr(Headers(i))
+            If Not existing.Exists(UCase$(h)) Then
+                Set col = lo.ListColumns.Add
+                col.name = h
+            End If
+        Next i
     End If
     Set EnsureTable = lo
 End Function

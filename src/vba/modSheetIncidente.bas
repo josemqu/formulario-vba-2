@@ -195,6 +195,9 @@ Private Function SaveVisiblePersonas(WS As Worksheet, ByVal idInc As String) As 
             p.in_itinere = CStr(WS.Cells(17, col).value)
             p.tipo_afectacion = CStr(WS.Cells(18, col).value)
             p.parte_afectada = CStr(WS.Cells(19, col).value)
+            p.clase_licencia = CStr(WS.Cells(20, col).value)
+            p.entrenamiento = CStr(WS.Cells(21, col).value)
+            p.aptitud_tarea = CStr(WS.Cells(22, col).value)
             If anyValue Then
                 Dim newId As String
                 newId = clsPersonaRepo.SaveEntity(p)
@@ -229,31 +232,32 @@ Private Function SaveVisibleVehiculos(WS As Worksheet, ByVal idInc As String) As
             v.anio_fabricacion_vehiculo = CStr(WS.Cells(11, col).value)
             v.tarea_vehiculo = CStr(WS.Cells(12, col).value)
             v.tipo_danio_vehiculo = CStr(WS.Cells(13, col).value)
-            v.cinturon_seguridad = CStr(WS.Cells(14, col).value)
-            v.cabina_cuchetas = CStr(WS.Cells(15, col).value)
-            v.airbags = CStr(WS.Cells(16, col).value)
-            v.gestion_flotas = CStr(WS.Cells(17, col).value)
-            v.token_conductor = CStr(WS.Cells(18, col).value)
-            v.marca_dispositivo = CStr(WS.Cells(19, col).value)
-            v.deteccion_fatiga = CStr(WS.Cells(20, col).value)
-            v.camara_trasera = CStr(WS.Cells(21, col).value)
-            v.limitador_velocidad = CStr(WS.Cells(22, col).value)
-            v.camara_delantera = CStr(WS.Cells(23, col).value)
-            v.camara_punto_ciego = CStr(WS.Cells(24, col).value)
-            v.camara_360 = CStr(WS.Cells(25, col).value)
-            v.espejo_punto_ciego = CStr(WS.Cells(26, col).value)
-            v.alarma_marcha_atras = CStr(WS.Cells(27, col).value)
-            v.sistema_frenos = CStr(WS.Cells(28, col).value)
-            v.monitoreo_neumaticos = CStr(WS.Cells(29, col).value)
-            v.proteccion_lateral = CStr(WS.Cells(30, col).value)
-            v.proteccion_trasera = CStr(WS.Cells(31, col).value)
-            v.acondicionador_cabina = CStr(WS.Cells(32, col).value)
-            v.calefaccion_cabina = CStr(WS.Cells(33, col).value)
-            v.manos_libres_cabina = CStr(WS.Cells(34, col).value)
-            v.kit_alcoholemia = CStr(WS.Cells(35, col).value)
-            v.kit_emergencia = CStr(WS.Cells(36, col).value)
-            v.epps_vehiculo = CStr(WS.Cells(37, col).value)
-            v.observaciones_vehiculo = CStr(WS.Cells(38, col).value)
+            v.estado_vehiculo = CStr(WS.Cells(14, col).value)
+            v.cinturon_seguridad = CStr(WS.Cells(15, col).value)
+            v.cabina_cuchetas = CStr(WS.Cells(16, col).value)
+            v.airbags = CStr(WS.Cells(17, col).value)
+            v.gestion_flotas = CStr(WS.Cells(18, col).value)
+            v.token_conductor = CStr(WS.Cells(19, col).value)
+            v.marca_dispositivo = CStr(WS.Cells(20, col).value)
+            v.deteccion_fatiga = CStr(WS.Cells(21, col).value)
+            v.camara_trasera = CStr(WS.Cells(22, col).value)
+            v.limitador_velocidad = CStr(WS.Cells(23, col).value)
+            v.camara_delantera = CStr(WS.Cells(24, col).value)
+            v.camara_punto_ciego = CStr(WS.Cells(25, col).value)
+            v.camara_360 = CStr(WS.Cells(26, col).value)
+            v.espejo_punto_ciego = CStr(WS.Cells(27, col).value)
+            v.alarma_marcha_atras = CStr(WS.Cells(28, col).value)
+            v.sistema_frenos = CStr(WS.Cells(29, col).value)
+            v.monitoreo_neumaticos = CStr(WS.Cells(30, col).value)
+            v.proteccion_lateral = CStr(WS.Cells(31, col).value)
+            v.proteccion_trasera = CStr(WS.Cells(32, col).value)
+            v.acondicionador_cabina = CStr(WS.Cells(33, col).value)
+            v.calefaccion_cabina = CStr(WS.Cells(34, col).value)
+            v.manos_libres_cabina = CStr(WS.Cells(35, col).value)
+            v.kit_alcoholemia = CStr(WS.Cells(36, col).value)
+            v.kit_emergencia = CStr(WS.Cells(37, col).value)
+            v.epps_vehiculo = CStr(WS.Cells(38, col).value)
+            v.observaciones_vehiculo = CStr(WS.Cells(39, col).value)
             If anyValue Then
                 Dim newIdV As String
                 newIdV = clsVehiculoRepo.SaveEntity(v)
@@ -295,28 +299,30 @@ Private Function ReadIncidenteFromSheet(WS As Worksheet) As clsIncidente
     e.uo_accidentado = CStr(WS.Range("D14").value)
     e.descripcion_esv = CStr(WS.Range("D15").value)
     e.denuncia_policial = CStr(WS.Range("D20").value)
-    e.examen_alcoholemia = CStr(WS.Range("D21").value)
-    e.examen_sustancias = CStr(WS.Range("D22").value)
-    e.entrevistas_testigos = CStr(WS.Range("D23").value)
-    e.accion_inmediata = CStr(WS.Range("D24").value)
-    e.consecuencias_seguridad = CStr(WS.Range("D25").value)
-    e.fecha_hora_reporte = WS.Range("D26").value
-    e.cantidad_personas = WS.Range("D27").value
-    e.cantidad_vehiculos = WS.Range("D28").value
-    e.clase_evento = CStr(WS.Range("D29").value)
-    e.tipo_colision = CStr(WS.Range("D30").value)
-    e.nivel_severidad = CStr(WS.Range("D31").value)
-    e.clasificacion_esv = CStr(WS.Range("D32").value)
+    e.lugar_denuncia_policial = CStr(WS.Range("D21").value)
+    e.examen_alcoholemia = CStr(WS.Range("D22").value)
+    e.examen_sustancias = CStr(WS.Range("D23").value)
+    e.entrevistas_testigos = CStr(WS.Range("D24").value)
+    e.accion_inmediata = CStr(WS.Range("D25").value)
+    e.consecuencias_seguridad = CStr(WS.Range("D26").value)
+    e.fecha_hora_reporte = WS.Range("D27").value
+    e.cantidad_personas = WS.Range("D28").value
+    e.cantidad_vehiculos = WS.Range("D29").value
+    e.clase_evento = CStr(WS.Range("D30").value)
+    e.tipo_colision = CStr(WS.Range("D31").value)
+    e.nivel_severidad = CStr(WS.Range("D32").value)
+    e.clasificacion_esv = CStr(WS.Range("D33").value)
     e.tipo_superficie = CStr(WS.Range("AC6").value)
     e.posee_banquina = CStr(WS.Range("AC7").value)
     e.tipo_ruta = CStr(WS.Range("AC8").value)
-    e.densidad_trafico = CStr(WS.Range("AC9").value)
-    e.condicion_ruta = CStr(WS.Range("AC10").value)
-    e.iluminacion_ruta = CStr(WS.Range("AC11").value)
-    e.senalizacion_ruta = CStr(WS.Range("AC12").value)
-    e.geometria_ruta = CStr(WS.Range("AC13").value)
-    e.condiciones_climaticas = CStr(WS.Range("AC14").value)
-    e.rango_temperaturas = CStr(WS.Range("AC15").value)
+    e.velocidad_max_permitida_YPF = CStr(WS.Range("AC9").value)
+    e.densidad_trafico = CStr(WS.Range("AC10").value)
+    e.condicion_ruta = CStr(WS.Range("AC11").value)
+    e.iluminacion_ruta = CStr(WS.Range("AC12").value)
+    e.senalizacion_ruta = CStr(WS.Range("AC13").value)
+    e.geometria_ruta = CStr(WS.Range("AC14").value)
+    e.condiciones_climaticas = CStr(WS.Range("AC15").value)
+    e.rango_temperaturas = CStr(WS.Range("AC16").value)
     Set ReadIncidenteFromSheet = e
 End Function
 
@@ -326,11 +332,11 @@ Private Sub ClearForm(WS As Worksheet)
     WS.Range("D8:D14").ClearContents
     WS.Range("D15:D19").ClearContents
     WS.Range("D20:D32").ClearContents
-    WS.Range("AC6:AC15").ClearContents
+    WS.Range("AC6:AC16").ClearContents
 End Sub
 
 Private Sub ClearSeccionesDinamicas(WS As Worksheet)
-    WS.Range("K5:T19").ClearContents
+    WS.Range("K5:T22").ClearContents
     WS.Range("W5:Z38").ClearContents
 End Sub
 
@@ -437,28 +443,30 @@ Public Sub LoadIncidenteEnHojaDesdeIdActual()
     WS.Range("D14").value = e.uo_accidentado
     WS.Range("D15").value = e.descripcion_esv
     WS.Range("D20").value = e.denuncia_policial
-    WS.Range("D21").value = e.examen_alcoholemia
-    WS.Range("D22").value = e.examen_sustancias
-    WS.Range("D23").value = e.entrevistas_testigos
-    WS.Range("D24").value = e.accion_inmediata
-    WS.Range("D25").value = e.consecuencias_seguridad
-    WS.Range("D26").value = e.fecha_hora_reporte
-    WS.Range("D27").value = e.cantidad_personas
-    WS.Range("D28").value = e.cantidad_vehiculos
-    WS.Range("D29").value = e.clase_evento
-    WS.Range("D30").value = e.tipo_colision
-    WS.Range("D31").value = e.nivel_severidad
-    WS.Range("D32").value = e.clasificacion_esv
+    WS.Range("D21").value = e.lugar_denuncia_policial
+    WS.Range("D22").value = e.examen_alcoholemia
+    WS.Range("D23").value = e.examen_sustancias
+    WS.Range("D24").value = e.entrevistas_testigos
+    WS.Range("D25").value = e.accion_inmediata
+    WS.Range("D26").value = e.consecuencias_seguridad
+    WS.Range("D27").value = e.fecha_hora_reporte
+    WS.Range("D28").value = e.cantidad_personas
+    WS.Range("D29").value = e.cantidad_vehiculos
+    WS.Range("D30").value = e.clase_evento
+    WS.Range("D31").value = e.tipo_colision
+    WS.Range("D32").value = e.nivel_severidad
+    WS.Range("D33").value = e.clasificacion_esv
     WS.Range("AC6").value = e.tipo_superficie
     WS.Range("AC7").value = e.posee_banquina
     WS.Range("AC8").value = e.tipo_ruta
-    WS.Range("AC9").value = e.densidad_trafico
-    WS.Range("AC10").value = e.condicion_ruta
-    WS.Range("AC11").value = e.iluminacion_ruta
-    WS.Range("AC12").value = e.senalizacion_ruta
-    WS.Range("AC13").value = e.geometria_ruta
-    WS.Range("AC14").value = e.condiciones_climaticas
-    WS.Range("AC15").value = e.rango_temperaturas
+    WS.Range("AC9").value = e.velocidad_max_permitida_YPF
+    WS.Range("AC10").value = e.densidad_trafico
+    WS.Range("AC11").value = e.condicion_ruta
+    WS.Range("AC12").value = e.iluminacion_ruta
+    WS.Range("AC13").value = e.senalizacion_ruta
+    WS.Range("AC14").value = e.geometria_ruta
+    WS.Range("AC15").value = e.condiciones_climaticas
+    WS.Range("AC16").value = e.rango_temperaturas
 End Sub
 
 Public Sub OcultarColumnasPersonas()

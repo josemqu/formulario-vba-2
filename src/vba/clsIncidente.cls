@@ -20,6 +20,7 @@ Public uo_incidente As String
 Public uo_accidentado As String
 Public descripcion_esv As String
 Public denuncia_policial As String
+Public lugar_denuncia_policial As String
 Public examen_alcoholemia As String
 Public examen_sustancias As String
 Public entrevistas_testigos As String
@@ -41,6 +42,7 @@ Public actualizado_en As Variant
 Public tipo_superficie As String
 Public posee_banquina As String
 Public tipo_ruta As String
+Public velocidad_max_permitida_YPF As String
 Public densidad_trafico As String
 Public condicion_ruta As String
 Public iluminacion_ruta As String
@@ -61,6 +63,7 @@ Public Function ToDict() As Object
     d("uo_incidente") = uo_incidente
     d("uo_accidentado") = uo_accidentado
     d("descripcion_esv") = descripcion_esv
+    d("lugar_denuncia_policial") = lugar_denuncia_policial
     d("denuncia_policial") = denuncia_policial
     d("examen_alcoholemia") = examen_alcoholemia
     d("examen_sustancias") = examen_sustancias
@@ -77,6 +80,7 @@ Public Function ToDict() As Object
     d("tipo_superficie") = tipo_superficie
     d("posee_banquina") = posee_banquina
     d("tipo_ruta") = tipo_ruta
+    d("velocidad_max_permitida_YPF") = velocidad_max_permitida_YPF
     d("densidad_trafico") = densidad_trafico
     d("condicion_ruta") = condicion_ruta
     d("iluminacion_ruta") = iluminacion_ruta
@@ -102,6 +106,7 @@ Public Sub FromDict(d As Object)
     uo_incidente = CStr(Nz(d("uo_incidente"), ""))
     uo_accidentado = CStr(Nz(d("uo_accidentado"), ""))
     descripcion_esv = CStr(Nz(d("descripcion_esv"), ""))
+    lugar_denuncia_policial = CStr(Nz(d("lugar_denuncia_policial"), ""))
     denuncia_policial = CStr(Nz(d("denuncia_policial"), ""))
     examen_alcoholemia = CStr(Nz(d("examen_alcoholemia"), ""))
     examen_sustancias = CStr(Nz(d("examen_sustancias"), ""))
@@ -118,6 +123,7 @@ Public Sub FromDict(d As Object)
     tipo_superficie = CStr(Nz(d("tipo_superficie"), ""))
     posee_banquina = CStr(Nz(d("posee_banquina"), ""))
     tipo_ruta = CStr(Nz(d("tipo_ruta"), ""))
+    velocidad_max_permitida_YPF = CStr(Nz(d("velocidad_max_permitida_YPF"), ""))
     densidad_trafico = CStr(Nz(d("densidad_trafico"), ""))
     condicion_ruta = CStr(Nz(d("condicion_ruta"), ""))
     iluminacion_ruta = CStr(Nz(d("iluminacion_ruta"), ""))
