@@ -343,11 +343,23 @@ End Sub
 Private Function ValidateForm(WS As Worksheet, ByRef messages As Collection) As Boolean
     Dim ok As Boolean: ok = True
     Set messages = New Collection
-    If LenB(CStr(WS.Range("D6").value)) = 0 Then ok = False: messages.Add ("Fecha de ocurrencia es requerida.")
-    If LenB(CStr(WS.Range("D8").value)) = 0 Then ok = False: messages.Add ("Pais es requerido.")
-    If LenB(CStr(WS.Range("D30").value)) = 0 Then ok = False: messages.Add ("Clase de evento es requerida.")
-    If LenB(CStr(WS.Range("D28").value)) > 0 Then If Not IsNumeric(WS.Range("D28").value) Then ok = False: messages.Add ("Cantidad personas debe ser numérico.")
-    If LenB(CStr(WS.Range("D29").value)) > 0 Then If Not IsNumeric(WS.Range("D29").value) Then ok = False: messages.Add ("Cantidad vehiculos debe ser numérico.")
+    If LenB(CStr(WS.Range("D6").Value2)) = 0 Then ok = False: messages.Add ("Fecha de ocurrencia es requerida.")
+    If LenB(CStr(WS.Range("D8").Value2)) = 0 Then ok = False: messages.Add ("Pais es requerido.")
+    Dim clase As String: clase = Trim$(CStr(WS.Range("D30").Value2))
+    If LenB(clase) = 0 Then ok = False: messages.Add ("Clase de evento es requerida.")
+
+    Dim vP As Variant: vP = WS.Range("D28").Value2
+    Dim sP As String: sP = Trim$(CStr(vP))
+    If LenB(sP) > 0 Then
+        If Not IsNumeric(sP) Then ok = False: messages.Add ("Cantidad personas debe ser numérico.")
+    End If
+
+    Dim vV As Variant: vV = WS.Range("D29").Value2
+    Dim sV As String: sV = Trim$(CStr(vV))
+    If LenB(sV) > 0 Then
+        If Not IsNumeric(sV) Then ok = False: messages.Add ("Cantidad vehiculos debe ser numérico.")
+    End If
+
     ValidateForm = ok
 End Function
 
