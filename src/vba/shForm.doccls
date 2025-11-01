@@ -188,7 +188,10 @@ End Sub
 Private Sub Worksheet_BeforeDoubleClick(ByVal Target As Range, Cancel As Boolean)
     On Error Resume Next
     If Target.CountLarge > 1 Then Exit Sub
-    If Not Intersect(Target, Me.Range("W38:Z38")) Is Nothing Then
+    Dim rngMS1 As Range, rngMS2 As Range
+    Set rngMS1 = Me.Range("W38:Z38") ' Vehículos EPPs
+    Set rngMS2 = Me.Range("K21:T21") ' Personas Entrenamiento
+    If Not Intersect(Target, Union(rngMS1, rngMS2)) Is Nothing Then
         Cancel = True
         modMultiSelectSupport.ShowMultiSelectForCell Target
     End If
@@ -197,7 +200,10 @@ End Sub
 Private Sub Worksheet_BeforeRightClick(ByVal Target As Range, Cancel As Boolean)
     On Error Resume Next
     If Target.CountLarge > 1 Then Exit Sub
-    If Not Intersect(Target, Me.Range("W38:Z38")) Is Nothing Then
+    Dim r1 As Range, r2 As Range
+    Set r1 = Me.Range("W38:Z38") ' Vehículos EPPs
+    Set r2 = Me.Range("K21:T21") ' Personas Entrenamiento
+    If Not Intersect(Target, Union(r1, r2)) Is Nothing Then
         Cancel = True
         modMultiSelectSupport.ShowMultiSelectForCell Target
     End If
